@@ -7,5 +7,6 @@ namespace ECommerce.Business.Abstract
     {
         Task<List<ParentCategory>> GetAllAsync();
         Task<ParentCategoryResponseModel> GetByIdAsync(int id);
+
     }
 }

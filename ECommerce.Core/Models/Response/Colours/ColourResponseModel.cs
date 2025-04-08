@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Core.Models.Response.Categories
+namespace ECommerce.Core.Models.Response.Colours
 {
-    public class CategoryResponseModel
+    public class ColourResponseModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ParentCategoryId { get; set; }
-        public string ParentCategoryName { get; set; }
+        public int ProductColurId { get; set; }
+
     }
 }
