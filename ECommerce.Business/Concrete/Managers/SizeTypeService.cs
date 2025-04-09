@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using ECommerce.DataAccess.Models;
 using System;
@@ -11,8 +12,8 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class SizeTypeService : ISizeTypeService
     {
-        private SizeTypeRepository _sizeTypeRepository;
-        public SizeTypeService(SizeTypeRepository sizeTypeRepository)
+        private ISizeTypeRepository _sizeTypeRepository;
+        public SizeTypeService(ISizeTypeRepository sizeTypeRepository)
         {
              _sizeTypeRepository = sizeTypeRepository;
         }
@@ -21,7 +22,8 @@ namespace ECommerce.Business.Concrete.Managers
 
         public async Task<List<Size>> GetAllAsync()
         {
-            await _sizeTypeRepository.GetAllAsync();
+            return await _sizeTypeRepository.GetAllAsync();
+            
         }
 
         public async Task<Size> GetByIdAsync(int id)

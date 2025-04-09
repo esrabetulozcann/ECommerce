@@ -10,6 +10,4 @@ public partial class ParentCategory
     public string Name { get; set; } = null!;
 
     public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
-
-    public virtual Category IdNavigation { get; set; } = null!;
 }

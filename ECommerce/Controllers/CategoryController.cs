@@ -1,4 +1,7 @@
-﻿using ECommerce.DataAccess.Models;
+﻿using ECommerce.Business.Abstract;
+using ECommerce.Business.Concrete.Managers;
+using ECommerce.Core.Models.Response.Categories;
+using ECommerce.DataAccess.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,19 +10,17 @@ namespace ECommerce.Controllers
 {
     public class CategoryController
     {
-        private readonly EcommerceContext _context;
-        public CategoryController(EcommerceContext context)
+        private readonly ICategoryService _categoryService;
+        public CategoryController(ICategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetAll()
+        [HttpGet("getall")]
+        public async Task<ActionResult<IEnumerable<CategoryResponseModel>>> GetAll()
         {
-            return await _context.Categories
-                .Include(c => c.ParentCategory) // parentCategory ile ilişki var
-                .ToListAsync();
+            return await _categoryService.GetAllAsync();
         }
 
 
@@ -27,18 +28,9 @@ namespace ECommerce.Controllers
         [HttpGet("{id}/categories")]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesByParent(int id)
         {
-            var categories = await _context.Categories
-                                           .Where(c => c.ParentCategoryId == id)
-                                           .ToListAsync();
-            /*if(categories == null)
-            {
-                return NotFound();
-            }
-            */
-            return categories;
+            //var categories = await _categoryService.GetByIdAsync(id);
+            //return categories;
+            return null;
         }
-
-       
-
     }
 }

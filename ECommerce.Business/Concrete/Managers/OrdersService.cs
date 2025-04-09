@@ -1,5 +1,7 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Response.Orders;
+using ECommerce.Core.Models.Response.Users;
+using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,9 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class OrdersService : IOrdersService
     {
-        private OrderRepository _orderRepository;
+        private IOrdersRepository _orderRepository;
 
-        public OrdersService(OrderRepository orderRepository)
+        public OrdersService(IOrdersRepository orderRepository)
         {
             _orderRepository = orderRepository;
         }
@@ -21,6 +23,11 @@ namespace ECommerce.Business.Concrete.Managers
         public async Task<List<OrdersResponseModel>> GetAllOrdersAsync()
         {
             return await _orderRepository.GetAllOrdersAsync();
+        }
+
+        public Task<UserResponseModel> GetByUserIdAsync(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<OrdersResponseModel> GetOrderBeyIdAsync(int id)

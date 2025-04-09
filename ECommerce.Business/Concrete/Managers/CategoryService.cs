@@ -1,26 +1,32 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Response.Categories;
-using ECommerce.DataAccess.Concrete;
+using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerce.Business.Concrete.Managers
 {
     public class CategoryService : ICategoryService
     {
-        private CategoryRepository _categoryRepositor;
-        public CategoryService(CategoryRepository categoryRepositor)
+        private readonly ICategoryRepository _categoryRepositor;
+        public CategoryService(ICategoryRepository categoryRepositor)
         {
             _categoryRepositor = categoryRepositor;
         }
 
-        public async Task<List<Category>> GetAllAsync()
+        public async Task<List<CategoryResponseModel>> GetAllAsync()
         {
-            return await _categoryRepositor.GetAllAsync();
+            var result =  await _categoryRepositor.GetAllAsync();
+
+            List<CategoryResponseModel> responseModels = new List<CategoryResponseModel>();
+
+            responseModels = result.Select(c => new CategoryResponseModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                ParentCategoryId = c.ParentCategoryId
+            }).ToList();
+
+            return responseModels;
         }
 
         public async Task<CategoryResponseModel> GetByIdAsync(int id)

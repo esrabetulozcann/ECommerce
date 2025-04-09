@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Response.Colours;
+using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using ECommerce.DataAccess.Models;
 using System;
@@ -12,9 +13,9 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class ProductColourService : IProductColourService
     {
-        private ProductColourRepository _productColourRepository;
+        private IProductColourRepository _productColourRepository;
 
-        public ProductColourService(ProductColourRepository productColourRepository)
+        public ProductColourService(IProductColourRepository productColourRepository)
         {
             _productColourRepository = productColourRepository;
         }

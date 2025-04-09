@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.DataAccess.Concrete
 {
-    public class SizeTypeRepository : ISizeRepository
+    public class SizeTypeRepository : ISizeTypeRepository
     {
         private EcommerceContext _context;
 
@@ -19,6 +19,7 @@ namespace ECommerce.DataAccess.Concrete
         }
 
         
+
         public async Task<List<Size>> GetAllAsync()
         {
             return await _context.Sizes.ToListAsync();
@@ -52,6 +53,7 @@ namespace ECommerce.DataAccess.Concrete
                 await _context.SaveChangesAsync();
             }
         }
+       
 
         
     }

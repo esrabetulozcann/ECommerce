@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Response.Product;
+using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class ProductImageService : IProductImageService
     {
-        private ProductImagesRepository _productImagesRepository;
+        private IProductImagesRepository _productImagesRepository;
 
-        public ProductImageService(ProductImagesRepository productImagesRepository)
+        public ProductImageService(IProductImagesRepository productImagesRepository)
         {
             _productImagesRepository = productImagesRepository;
         }

@@ -23,9 +23,7 @@ public partial class Product
 
     public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 
-    public virtual Category? Category { get; set; }
-
-    public virtual Category CategoryNavigation { get; set; } = null!;
+    public virtual Category Category { get; set; } = null!;
 
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 

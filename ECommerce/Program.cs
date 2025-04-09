@@ -1,9 +1,19 @@
+using ECommerce.Business.Extensions;
+using ECommerce.DataAccess.Extensions;
+using ECommerce.DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<EcommerceContext>(_ => _.UseSqlServer("Server=LAPTOP-KQ0LS43E;Database=ECommerce;User Id=sa;Password=Password1;TrustServerCertificate=True;"));
+
+builder.Services.AddDataAccessRegistration();
+builder.Services.AddBusinessRegistration();
 
 var app = builder.Build();
 

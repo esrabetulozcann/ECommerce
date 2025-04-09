@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using ECommerce.DataAccess.Models;
 using System;
@@ -11,8 +12,8 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public  class ProductSizeService : IProductSizeService
     {
-        private ProductSizeRepository _productSizeRepository;
-        public ProductSizeService(ProductSizeRepository productSizeRepository)
+        private IProductSizeRepository _productSizeRepository;
+        public ProductSizeService(IProductSizeRepository productSizeRepository)
         {
             _productSizeRepository = productSizeRepository;
         }

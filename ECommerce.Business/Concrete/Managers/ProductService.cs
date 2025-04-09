@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using ECommerce.DataAccess.Models;
 using System;
@@ -11,8 +12,8 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class ProductService : IProductService
     {
-        private ProductRepository _productRepository;
-        public ProductService(ProductRepository productRepository)
+        private IProductRepository _productRepository;
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }

@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Response.Categories;
+using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using ECommerce.DataAccess.Models;
 
@@ -7,8 +8,8 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class ParentCategoryService : IParentCategoryService
     {
-        private ParentCategoryRepository _parentCategoryRepository;
-        public ParentCategoryService(ParentCategoryRepository parentCategoryRepository)
+        private IParentCategoryRepository _parentCategoryRepository;
+        public ParentCategoryService(IParentCategoryRepository parentCategoryRepository)
         {
             _parentCategoryRepository = parentCategoryRepository;
         }
