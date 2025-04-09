@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.Response.Categories;
 using ECommerce.Core.Models.Response.Colours;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
@@ -13,25 +14,65 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class ColourService : IColourService
     {
-        private IColourRepository _colourRepository;
+        private readonly IColourRepository _colourRepository;
         public ColourService(IColourRepository colourRepository)
         {
             _colourRepository = colourRepository;
         }
 
-        public async Task<List<Colour>> GetAllAsync()
+        public async Task<List<ColourResponseModel>> GetAllAsync()
         {
-            return await _colourRepository.GetAllAsync();
+            var result = await _colourRepository.GetAllAsync();
+
+            List<ColourResponseModel> responseModels = new List<ColourResponseModel>();
+
+            responseModels = result.Select(c => new ColourResponseModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                ProductColurId = c.ProductColours.First().Id,
+            }).ToList();
+
+            return responseModels;
         }
 
         public async Task<ColourResponseModel> GetByIdAsync(int id)
         {
-            return await _colourRepository.GetByIdAsync(id);
+            var result = await _colourRepository.GetByIdAsync(id);
+            if(result == null)
+            {
+                return new ColourResponseModel();
+            }
+            else
+            {
+                ColourResponseModel responseModel = new ColourResponseModel
+                {
+                    Id = result.Id,
+                    Name = result.Name,
+                    ProductColurId = result.ProductColours.First().ProductId
+                };
+                return responseModel;
+            }
         }
 
         public async Task<ColourResponseModel> GetByNameAsync(string name)
         {
-            return await _colourRepository.GetByNameAsync(name);
+            var result = await _colourRepository.GetByNameAsync(name);
+            if(result == null)
+            {
+                return new ColourResponseModel();
+            }
+            else
+            {
+                ColourResponseModel responseModel = new ColourResponseModel
+                {
+                    Id = result.Id,
+                    Name = result.Name,
+                    ProductColurId = result.ProductColours.First().ProductId
+                };
+
+                return responseModel;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ECommerce.Core.Models.Response.Colours;
+using ECommerce.Core.Models.Response.Product;
 using ECommerce.DataAccess.Models;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace ECommerce.Business.Abstract
 {
     public interface IProductColourService
     {
-        Task<List<ProductColour>> GetAllAsync();
+        Task<List<ProductColourResponseModel>> GetAllAsync();
         Task<ProductColourResponseModel> GetByIdAsync(int id);
-        Task<ProductColourResponseModel> GetByColourIdAsync(int id);
-        Task<ProductColourResponseModel> GetByProductIdAsync(int id);
+        Task<ColourResponseModel> GetByColourIdAsync(int id); // sor
+        Task<ProductResponseModel> GetByProductIdAsync(int id);
     }
 }

@@ -11,8 +11,8 @@ namespace ECommerce.DataAccess.Abstract
     public interface IColourRepository
     {
         Task<List<Colour>> GetAllAsync();
-        Task<ColourResponseModel> GetByIdAsync(int id);
-        Task<ColourResponseModel> GetByNameAsync(string name);
+        Task<Colour> GetByIdAsync(int id);
+        Task<Colour> GetByNameAsync(string name);
 
     }
 }

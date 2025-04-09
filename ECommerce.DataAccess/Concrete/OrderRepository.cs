@@ -13,25 +13,28 @@ namespace ECommerce.DataAccess.Concrete
 {
     public class OrderRepository : IOrdersRepository
     {
-        private EcommerceContext _context;
+        EcommerceContext _context;
         public OrderRepository(EcommerceContext context)
         {
-            _context = context;
+            _context = new();
         }
 
-        public Task<List<OrdersResponseModel>> GetAllOrdersAsync()
+        public async Task<List<Order>> GetAllOrdersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Orders.ToListAsync();
         }
 
-        public Task<UserResponseModel> GetByUserIdAsync(int id)
+        public async Task<User> GetByUserIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Orders
+                        .Where(o => o.UserId == id)
+                        .Select(o => o.User)
+                        .FirstOrDefaultAsync();
         }
 
-        public Task<OrdersResponseModel> GetOrderBeyIdAsync(int id)
+        public async Task<Order> GetOrderBeyIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Orders.Where(o => o.Id == id).FirstOrDefaultAsync();
         }
     }
 }

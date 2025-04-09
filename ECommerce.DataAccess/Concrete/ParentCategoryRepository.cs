@@ -1,38 +1,26 @@
 ﻿using ECommerce.Core.Models.Response.Categories;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.DataAccess.Concrete
 {
     public class ParentCategoryRepository : IParentCategoryRepository
     {
-        private EcommerceContext _context;
+        EcommerceContext _context;
         public ParentCategoryRepository(EcommerceContext context)
         {
-            _context = context;
+            _context = new();
         }
 
         public async Task<List<ParentCategory>> GetAllAsync()
         {
-            return _context.ParentCategories.ToList(); // Parent category lerin hepsini listeledim.
+            return await _context.ParentCategories.ToListAsync(); // Parent category lerin hepsini listeledim.
         }
 
-        public async Task<ParentCategoryResponseModel> GetByIdAsync(int id)
+        public async Task<ParentCategory> GetByIdAsync(int id)
         {
-            var parentCategory = _context.ParentCategories
-                 .Where(x => x.Id == id)
-                 .Select(pc => new ParentCategoryResponseModel
-                 {
-                     Id = pc.Id,
-                     Name = pc.Name,
-                     Categories = pc.Categories.Select(c => new CategoryResponseModel
-                     {
-                         Id = c.Id,
-                         Name = c.Name
-                     }).ToList()
-                 }).FirstOrDefault();
-
-            return parentCategory;
+            return await _context.ParentCategories.Where(pc => pc.Id == id).FirstOrDefaultAsync();
         }
     }
 }

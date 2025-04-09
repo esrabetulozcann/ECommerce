@@ -13,7 +13,7 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class OrdersService : IOrdersService
     {
-        private IOrdersRepository _orderRepository;
+        private readonly IOrdersRepository _orderRepository;
 
         public OrdersService(IOrdersRepository orderRepository)
         {
@@ -22,17 +22,73 @@ namespace ECommerce.Business.Concrete.Managers
 
         public async Task<List<OrdersResponseModel>> GetAllOrdersAsync()
         {
-            return await _orderRepository.GetAllOrdersAsync();
+            var result = await _orderRepository.GetAllOrdersAsync();
+            List<OrdersResponseModel> orderResponseModels = new List<OrdersResponseModel>();
+            orderResponseModels = result.Select(o => new OrdersResponseModel
+            {
+                Id = o.Id,
+                OrderDate = o.OrderDate,
+                TotalPrice = o.TotalPrice,
+                AddressId = o.AddressId,
+                Status = o.Status,
+            }).ToList();
+            return orderResponseModels;
         }
 
-        public Task<UserResponseModel> GetByUserIdAsync(int id)
+        public async Task<UserResponseModel> GetByUserIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var result = await _orderRepository.GetByUserIdAsync(id);
+
+            if(result == null)
+            {
+                return new UserResponseModel();
+            }
+            else
+            {
+                UserResponseModel userResponseModel = new UserResponseModel
+                {
+                    Id = result.Id,
+                    FirstName = result.FirstName,
+                    LastName = result.LastName,
+                    BirthDate = result.BirthDate,
+                    CreatedDate = result.CreatedDate,
+                    Email = result.Email,
+                    Gender = result.Gender,
+                    Password = result.Password,
+                    PhoneNumber1 = result.PhoneNumber1,
+                    PhoneNumber2 = result.PhoneNumber2
+
+                };
+                return userResponseModel;
+            }
         }
 
         public async Task<OrdersResponseModel> GetOrderBeyIdAsync(int id)
         {
-            return await _orderRepository.GetOrderBeyIdAsync(id);
+            var result = await _orderRepository.GetOrderBeyIdAsync(id);
+            if(result == null)
+            {
+                return new OrdersResponseModel();
+
+            }
+            else
+            {
+
+                OrdersResponseModel ordersResponseModel = new OrdersResponseModel
+                {
+                    Id = result.Id,
+                    OrderDate = result.OrderDate,
+                    TotalPrice = result.TotalPrice,
+                    AddressId = result.AddressId,
+                    Status = result.Status,
+
+                };
+
+                return ordersResponseModel;
+
+                
+            }
+
         }
     }
 }

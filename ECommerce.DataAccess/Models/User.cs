@@ -17,13 +17,13 @@ public partial class User
 
     public string Gender { get; set; } = null!;
 
-    public DateOnly BirthDate { get; set; }
+    public DateTime BirthDate { get; set; }
 
     public DateTime CreatedDate { get; set; }
 
-    public string PhoneNumber1 { get; set; } = null!;
+    public int PhoneNumber1 { get; set; } 
 
-    public string PhoneNumber2 { get; set; } = null!;
+    public int PhoneNumber2 { get; set; } 
 
     public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
 

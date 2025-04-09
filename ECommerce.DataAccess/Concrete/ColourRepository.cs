@@ -1,6 +1,7 @@
 ﻿using ECommerce.Core.Models.Response.Colours;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,41 +12,25 @@ namespace ECommerce.DataAccess.Concrete
 {
     public class ColourRepository : IColourRepository
     {
-        private EcommerceContext _context;
+         EcommerceContext _context;
         public ColourRepository(EcommerceContext context)
         {
-            _context = context;
+            _context = new();
         }
 
         public async Task<List<Colour>> GetAllAsync()
         {
-            return _context.Colours.ToList();
+            return await _context.Colours.ToListAsync();
         }
 
-        public async Task<ColourResponseModel> GetByIdAsync(int id)
+        public async Task<Colour> GetByIdAsync(int id)
         {
-            var colour = _context.Colours
-                .Where(c=> c.Id == id)
-                .Select(c => new ColourResponseModel
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                }).ToList()
-                .FirstOrDefault();
-            return colour;
+            return await _context.Colours.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<ColourResponseModel> GetByNameAsync(string name)
+        public async Task<Colour> GetByNameAsync(string name)
         {
-            var colour = _context.Colours
-                .Where(c => c.Name == name)
-                .Select(c => new ColourResponseModel
-                {
-                    Name = c.Name,
-                    Id = c.Id,
-                }).ToList()
-                .FirstOrDefault();
-            return colour;
+            return await _context.Colours.Where(c => c.Name == name).FirstOrDefaultAsync();
         }
     }
 }

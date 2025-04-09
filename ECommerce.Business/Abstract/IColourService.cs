@@ -10,7 +10,7 @@ namespace ECommerce.Business.Abstract
 {
     public interface IColourService
     {
-        Task<List<Colour>> GetAllAsync();
+        Task<List<ColourResponseModel>> GetAllAsync();
         Task<ColourResponseModel> GetByIdAsync(int id);
         Task<ColourResponseModel> GetByNameAsync(string name);
     }

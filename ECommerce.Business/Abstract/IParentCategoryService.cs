@@ -5,7 +5,7 @@ namespace ECommerce.Business.Abstract
 {
     public interface IParentCategoryService
     {
-        Task<List<ParentCategory>> GetAllAsync();
+        Task<List<ParentCategoryResponseModel>> GetAllAsync();
         Task<ParentCategoryResponseModel> GetByIdAsync(int id);
 
     }

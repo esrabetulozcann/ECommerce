@@ -8,26 +8,44 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class ParentCategoryService : IParentCategoryService
     {
-        private IParentCategoryRepository _parentCategoryRepository;
+        private readonly IParentCategoryRepository _parentCategoryRepository;
         public ParentCategoryService(IParentCategoryRepository parentCategoryRepository)
         {
             _parentCategoryRepository = parentCategoryRepository;
         }
 
-        public async Task<List<ParentCategory>> GetAllAsync()
+        public async Task<List<ParentCategoryResponseModel>> GetAllAsync()
         {
-            var result =await _parentCategoryRepository.GetAllAsync();
-            
-            //if(result.FirstOrDefault().Categories == "Categor1")
-            //{
-            //    //code
-            //}
-            return await _parentCategoryRepository.GetAllAsync();
+            var result = await _parentCategoryRepository.GetAllAsync();
+
+            List<ParentCategoryResponseModel> responseModels = new List<ParentCategoryResponseModel>();
+
+            responseModels = result.Select(pc => new ParentCategoryResponseModel
+            {
+                Id = pc.Id,
+                Name = pc.Name,
+
+            }).ToList();
+            return responseModels;
+
         }
 
         public async Task<ParentCategoryResponseModel> GetByIdAsync(int id)
         {
-            return await _parentCategoryRepository.GetByIdAsync(id);
+            var result = await _parentCategoryRepository.GetByIdAsync(id);
+            if(result == null)
+            {
+                return new ParentCategoryResponseModel();
+            }
+            else
+            {
+                ParentCategoryResponseModel responseModel = new ParentCategoryResponseModel
+                {
+                    Id = result.Id,
+                    Name = result.Name,
+                };
+                return responseModel;
+            }
         }
     }
 }

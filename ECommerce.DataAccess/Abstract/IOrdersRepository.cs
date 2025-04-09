@@ -12,8 +12,8 @@ namespace ECommerce.DataAccess.Abstract
 {
     public interface IOrdersRepository
     {
-        Task<List<OrdersResponseModel>> GetAllOrdersAsync();
-        Task<OrdersResponseModel> GetOrderBeyIdAsync(int id);
-        Task<UserResponseModel> GetByUserIdAsync(int id);
+        Task<List<Order>> GetAllOrdersAsync();
+        Task<Order> GetOrderBeyIdAsync(int id);
+        Task<User> GetByUserIdAsync(int id);
     }
 }

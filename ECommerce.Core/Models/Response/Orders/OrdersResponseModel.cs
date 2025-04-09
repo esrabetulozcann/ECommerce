@@ -11,6 +11,8 @@ namespace ECommerce.Core.Models.Response.Orders
     {
         public int Id { get; set; }
         public int UserId { get; set; }
+        public int AddressId { get; set; }
+        public bool Status { get; set; }
         public UserResponseModel? User { get; set; } // Tekil kullanıcı bilgisi
         public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }

@@ -1,6 +1,7 @@
 ﻿using ECommerce.Core.Models.Response.Colours;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,57 +12,30 @@ namespace ECommerce.DataAccess.Concrete
 {
     public class ProductColourRepository : IProductColourRepository
     {
-        private EcommerceContext _context;
+         EcommerceContext _context;
         public ProductColourRepository(EcommerceContext context)
         {
-            _context = context;
+            _context = new();
         }
 
         public async Task<List<ProductColour>> GetAllAsync()
         {
-            return  _context.ProductColours.ToList(); // Tüm ürün renklerini getirdim.
+            return await _context.ProductColours.ToListAsync();
         }
 
-        public async Task<ProductColourResponseModel> GetByColourIdAsync(int id)
+        public async Task<Colour> GetByColourIdAsync(int id)
         {
-            var productColour = _context.ProductColours
-                .Where(x => x.Id == id)
-                .Select(x => new ProductColourResponseModel
-                {
-                    ProductId = x.Id,
-                    ColourId = x.ColourId,
-                }).ToList()
-                .FirstOrDefault();
-            return productColour;
+            return await _context.Colours.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<ProductColourResponseModel> GetByIdAsync(int id)
+        public async Task<ProductColour> GetByIdAsync(int id)
         {
-            var productColour = _context.ProductColours
-                .Where(c => c.Id == id)
-                .Select(c => new ProductColourResponseModel
-                {
-                    Id = c.Id,
-                    ProductId = c.ProductId,
-                    ColourId = c.ColourId,
-                }).ToList()
-                .FirstOrDefault();
-            return productColour;
+            return await _context.ProductColours.Where(pc => pc.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<ProductColourResponseModel> GetByProductIdAsync(int id)
+        public async Task<Product> GetByProductIdAsync(int id)
         {
-            var productColour = _context.ProductColours
-                .Where(c => c.Id == id)
-                .Select(c => new ProductColourResponseModel
-                {
-                    ColourId = c.Id,
-                    ProductId = c.ProductId,
-
-                }).ToList()
-                .FirstOrDefault();
-
-            return productColour;
+            return await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
         }
     }
 }
