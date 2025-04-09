@@ -26,11 +26,18 @@ namespace ECommerce.Controllers
 
         // Belirli bir parent'ın alt kategorilerini çekmek için bu şekilde yazdım.
         [HttpGet("{id}/categories")]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesByParent(int id)
+        public async Task<ActionResult<CategoryResponseModel>> GetCategoriesByParent(int id)
         {
-            //var categories = await _categoryService.GetByIdAsync(id);
-            //return categories;
-            return null;
+            var categories = await _categoryService.GetByIdAsync(id);
+            return categories;
+        }
+
+       
+        [HttpGet("categoriesbyname")]
+        public async Task<ActionResult<CategoryResponseModel>> GetByNameAsync([FromQuery]string name)
+        {
+            var categories = await _categoryService.GetByNameAsync(name);
+            return categories;
         }
     }
 }

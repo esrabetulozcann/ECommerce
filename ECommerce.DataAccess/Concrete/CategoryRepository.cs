@@ -1,6 +1,7 @@
 ﻿using ECommerce.Core.Models.Response.Categories;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.DataAccess.Concrete
 {
@@ -14,45 +15,18 @@ namespace ECommerce.DataAccess.Concrete
         }
         public async Task<List<Category>> GetAllAsync()
         {
-            return _context.Categories.ToList(); // Tüm altkategorileri döndür dedim.
-            
+            return await _context.Categories.ToListAsync(); // Tüm altkategorileri döndür dedim.
+
         }
 
-        public async Task<CategoryResponseModel> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            //var category = await _context.Categories
-            //    .Where(c => c.Id == id)
-            //    .Select(c => new CategoryResponseModel
-            //    {
-            //        Id = c.Id,
-            //        Name = c.Name,
-            //        ParentCategoryId = c.ParentCategoryId,
-            //        ParentCategoryName = c.ParentCategory.Name // Include gerekmez çünkü Select içinde
-            //    })
-            //    .FirstOrDefaultAsync();
-
-            //return category;
-
-            return null;
+            return await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<CategoryResponseModel> GetByNameAsync(string name)
+        public async Task<Category> GetByNameAsync(string name)
         {
-            //var category = await _context.Categories
-            //    .Where(c => c.Name == name)
-            //    .Select(c => new CategoryResponseModel
-            //    {
-            //        Id = c.Id,
-            //        Name = c.Name,
-            //        ParentCategoryId = c.ParentCategoryId,
-            //        ParentCategoryName = c.ParentCategory.Name
-            //    })
-            //    .FirstOrDefaultAsync();
-
-            //return category;
-
-            return null;
+            return await _context.Categories.Where(c => c.Name == name).FirstOrDefaultAsync();
         }
-
     }
 }

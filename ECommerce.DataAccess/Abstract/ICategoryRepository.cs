@@ -1,17 +1,11 @@
-﻿using ECommerce.Core.Models.Response.Categories;
-using ECommerce.DataAccess.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ECommerce.DataAccess.Models;
 
 namespace ECommerce.DataAccess.Abstract
 {
     public interface ICategoryRepository
     {
         Task<List<Category>> GetAllAsync();
-        Task<CategoryResponseModel> GetByIdAsync(int id);
-        Task<CategoryResponseModel> GetByNameAsync(String name);
+        Task<Category> GetByIdAsync(int id);
+        Task<Category> GetByNameAsync(string name);
     }
 }
