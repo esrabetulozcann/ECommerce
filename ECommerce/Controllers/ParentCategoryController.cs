@@ -1,4 +1,6 @@
-﻿using ECommerce.DataAccess.Models;
+﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.Response.Categories;
+using ECommerce.DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Web.Http;
@@ -11,40 +13,46 @@ namespace ECommerce.Controllers
     [Route("api/[controller]")]
     public class ParentCategoryController : ControllerBase
     {
-        private readonly EcommerceContext _context;
+        private readonly IParentCategoryService _parentCategoryService;
 
-        public ParentCategoryController(EcommerceContext context)
+        public ParentCategoryController(IParentCategoryService parentCategoryService)
         {
-            _context = context;
-        }
-
-        [HttpGet("with-categories")]
-        public async Task<ActionResult<IEnumerable<ParentCategory>>> GetAllWithCategories()
-        {
-            return await _context.ParentCategories.ToListAsync();
+            _parentCategoryService = parentCategoryService;
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult<ParentCategory>> GetAll()
+        [HttpGet("getAll")]
+        public async Task<ActionResult<List<ParentCategoryResponseModel>>> GetAll()
         {
-            var parentCategory =  await _context.ParentCategories.ToListAsync();
-            return Ok(parentCategory);
+            return await _parentCategoryService.GetAllAsync();
+
         }
 
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ParentCategory>> GetById(int? id)
+
+        [HttpGet("{id}/ParentCategory")]
+        public async Task<ActionResult<ParentCategoryResponseModel>> GetById(int id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
-            var category = await _context.ParentCategories.FindAsync(id);
-            if (category == null)
-                return NotFound();
-
-            return category;
+            else
+            {
+                var parentCategory = await _parentCategoryService.GetByIdAsync(id);
+                return parentCategory;
+            }
         }
+
+        [HttpGet("with-categories")]
+        public async Task<ActionResult<List<ParentCategoryResponseModel>>> GetAllWithCategories()
+        {
+            return await _parentCategoryService.GetAllWithCategories();
+        }
+
+
+
+
+
     }
 }

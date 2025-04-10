@@ -25,7 +25,7 @@ namespace ECommerce.DataAccess.Concrete
 
         public async Task<Colour> GetByIdAsync(int id)
         {
-            return await _context.Colours.Where(c => c.Id == id).FirstOrDefaultAsync();
+            return  await _context.Colours.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Colour> GetByNameAsync(string name)

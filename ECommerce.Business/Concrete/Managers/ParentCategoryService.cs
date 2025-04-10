@@ -30,6 +30,26 @@ namespace ECommerce.Business.Concrete.Managers
 
         }
 
+        public async Task<List<ParentCategoryResponseModel>> GetAllWithCategories()
+        {
+            var result = await _parentCategoryRepository.GetAllWithCategories();
+            List<ParentCategoryResponseModel> responseModels = new List<ParentCategoryResponseModel>();
+
+            responseModels = result.Select(pc => new ParentCategoryResponseModel
+            {
+                Id = pc.Id,
+                Name = pc.Name,
+                Categories = pc.Categories.Select(c => new CategoryResponseModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                }).ToList(),
+
+            }).ToList();
+
+            return responseModels;
+        }
+
         public async Task<ParentCategoryResponseModel> GetByIdAsync(int id)
         {
             var result = await _parentCategoryRepository.GetByIdAsync(id);
@@ -47,5 +67,8 @@ namespace ECommerce.Business.Concrete.Managers
                 return responseModel;
             }
         }
+
+
+       
     }
 }

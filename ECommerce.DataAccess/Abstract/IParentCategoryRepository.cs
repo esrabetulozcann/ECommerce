@@ -8,6 +8,8 @@ namespace ECommerce.DataAccess.Abstract
         //Generic Repository Uygulanacak - Faz 2
         Task<List<ParentCategory>> GetAllAsync();
         Task<ParentCategory> GetByIdAsync(int id);
-        
+        Task<List<ParentCategory>> GetAllWithCategories();
+
+
     }
 }

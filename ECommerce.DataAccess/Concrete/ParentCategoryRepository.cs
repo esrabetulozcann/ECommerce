@@ -22,5 +22,16 @@ namespace ECommerce.DataAccess.Concrete
         {
             return await _context.ParentCategories.Where(pc => pc.Id == id).FirstOrDefaultAsync();
         }
+
+        public async Task<List<ParentCategory>> GetAllWithCategories()
+        {
+            var parentCategories = await _context.ParentCategories
+                .Include(pc => pc.Categories)
+                .ToListAsync();
+
+            return parentCategories;
+        }
+
+        
     }
 }

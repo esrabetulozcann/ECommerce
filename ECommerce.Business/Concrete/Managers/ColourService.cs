@@ -30,7 +30,6 @@ namespace ECommerce.Business.Concrete.Managers
             {
                 Id = c.Id,
                 Name = c.Name,
-                ProductColurId = c.ProductColours.First().Id,
             }).ToList();
 
             return responseModels;
@@ -49,7 +48,7 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
-                    ProductColurId = result.ProductColours.First().ProductId
+                    ProductColurId = result.ProductColours.Select(pc => pc.Id).FirstOrDefault(),
                 };
                 return responseModel;
             }
@@ -68,7 +67,7 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
-                    ProductColurId = result.ProductColours.First().ProductId
+                    ProductColurId = result.ProductColours.Select(pc => pc.Id).FirstOrDefault(),
                 };
 
                 return responseModel;
