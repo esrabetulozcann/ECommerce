@@ -50,13 +50,13 @@ namespace ECommerce.Business.Concrete.Managers
                     Id = result.Id,
                     FirstName = result.FirstName,
                     LastName = result.LastName,
-                    BirthDate = result.BirthDate,
+                    BirthDate = result.BirthDate.ToDateTime(TimeOnly.MinValue),
                     CreatedDate = result.CreatedDate,
                     Email = result.Email,
                     Gender = result.Gender,
                     Password = result.Password,
-                    PhoneNumber1 = result.PhoneNumber1,
-                    PhoneNumber2 = result.PhoneNumber2
+                    PhoneNumber1 = int.Parse(result.PhoneNumber1),
+                    PhoneNumber2 = int.Parse(result.PhoneNumber2),
 
                 };
                 return userResponseModel;

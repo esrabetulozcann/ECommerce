@@ -11,48 +11,30 @@ namespace ECommerce.DataAccess.Concrete
 {
     public class SizeTypeRepository : ISizeTypeRepository
     {
-        private EcommerceContext _context;
+         EcommerceContext _context;
 
         public SizeTypeRepository(EcommerceContext context)
         {
-            _context = context;
+            _context = new();
         }
 
         
 
-        public async Task<List<Size>> GetAllAsync()
+        public async Task<List<SizeType>> GetAllAsync()
         {
-            return await _context.Sizes.ToListAsync();
+            return await _context.SizeTypes.ToListAsync();
         }
 
-        public async Task<Size> GetByIdAsync(int id)
+        public async Task<SizeType> GetByIdAsync(int id)
         {
-            return _context.Sizes.FirstOrDefault(s => s.Id == id);
+            return await _context.SizeTypes.Where(st => st.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Size> GetByNameAsync(string name)
+        public async Task<SizeType> GetByNameAsync(string name)
         {
-            return _context.Sizes.FirstOrDefault(s => s.Name == name);
+            return await _context.SizeTypes.Where(st => st.Name == name).FirstOrDefaultAsync();
         }
-        public async Task AddAsync(Size size)
-        {
-            await _context.Sizes.AddAsync(size);
-            await _context.SaveChangesAsync();
-        }
-        public async Task UpdateAsync(Size size)
-        {
-            _context.Sizes.Update(size);
-            await _context.SaveChangesAsync();
-        }
-        public async Task DeleteAsync(int id)
-        {
-            var size = await _context.Sizes.FindAsync(id);
-            if (size != null)
-            {
-                _context.Sizes.Remove(size);
-                await _context.SaveChangesAsync();
-            }
-        }
+      
        
 
         

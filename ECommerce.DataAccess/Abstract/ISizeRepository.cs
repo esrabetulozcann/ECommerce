@@ -12,9 +12,11 @@ namespace ECommerce.DataAccess.Abstract
         Task<List<Size>> GetAllAsync(); // Tüm bedenleri getirir
         Task<Size> GetByIdAsync(int id); // ID'ye göre beden getirir
         Task<Size> GetByNameAsync(string name); // İsme göre beden getirir (örneğin: "M", "L", "XL")
+        Task<SizeType> GetBySizeTypeIdAsync(int id);
+        Task AddAsync(Size size);
+        Task UpdateAsync(Size size);
+        Task DeleteAsync(int id);
 
-        Task AddAsync(Size size); // Yeni beden ekler
-        Task UpdateAsync(Size size); // Var olan bedeni günceller
-        Task DeleteAsync(int id); // Beden siler
+    
     }
 }

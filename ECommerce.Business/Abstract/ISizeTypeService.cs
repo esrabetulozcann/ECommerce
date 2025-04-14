@@ -1,4 +1,5 @@
-﻿using ECommerce.DataAccess.Models;
+﻿using ECommerce.Core.Models.Response.Sizes;
+using ECommerce.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,9 @@ namespace ECommerce.Business.Abstract
 {
     public interface ISizeTypeService
     {
-        Task<List<Size>> GetAllAsync();
-        Task<Size> GetByIdAsync(int id); // ID'ye göre beden getirir
-        Task<Size> GetByNameAsync(string name); // İsme göre beden getirir (örneğin: "M", "L", "XL")
-        Task AddAsync(Size size); // Yeni beden ekler
-        Task UpdateAsync(Size size); // Var olan bedeni günceller
-        Task DeleteAsync(int id); // Beden siler
+        Task<List<SizeTypeResponseModel>> GetAllAsync();
+        Task<SizeTypeResponseModel> GetByIdAsync(int id); // ID'ye göre beden getirir
+        Task<SizeTypeResponseModel> GetByNameAsync(string name); // İsme göre beden getirir (örneğin: "M", "L", "XL")
+        
     }
 }

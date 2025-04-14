@@ -11,7 +11,7 @@ public partial class Payment
 
     public DateTime Date { get; set; }
 
-    public byte PaymentType { get; set; }
+    public int PaymentTypeId { get; set; }
 
     public bool Isok { get; set; }
 
@@ -20,4 +20,6 @@ public partial class Payment
     public double PaymentTotal { get; set; }
 
     public virtual Order Order { get; set; } = null!;
+
+    public virtual PaymetnType PaymentType { get; set; } = null!;
 }

@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.Response.Sizes;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using ECommerce.DataAccess.Models;
@@ -20,34 +21,57 @@ namespace ECommerce.Business.Concrete.Managers
 
         
 
-        public async Task<List<Size>> GetAllAsync()
+        public async Task<List<SizeTypeResponseModel>> GetAllAsync()
         {
-            return await _sizeTypeRepository.GetAllAsync();
+            var result = await _sizeTypeRepository.GetAllAsync();
+           List<SizeTypeResponseModel> responseModels = new List<SizeTypeResponseModel>();
+            responseModels = result.Select(x => new SizeTypeResponseModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+            }).ToList();
+
+            return responseModels;
             
         }
 
-        public async Task<Size> GetByIdAsync(int id)
+        public async Task<SizeTypeResponseModel> GetByIdAsync(int id)
         {
-            return await _sizeTypeRepository.GetByIdAsync(id);
+            var result = await _sizeTypeRepository.GetByIdAsync(id);
+            if(result == null)
+            {
+                return new SizeTypeResponseModel();
+            }
+            else
+            {
+                SizeTypeResponseModel responseModel = new SizeTypeResponseModel
+                {
+                    Id = result.Id,
+                    Name = result.Name,
+                };
+
+                return responseModel;
+            }
         }
 
-        public async Task<Size> GetByNameAsync(string name)
+        public async Task<SizeTypeResponseModel> GetByNameAsync(string name)
         {
-            return await _sizeTypeRepository.GetByNameAsync(name);
+            var result = await _sizeTypeRepository.GetByNameAsync(name);
+            if(result == null )
+            {
+                return new SizeTypeResponseModel();
+            }
+            else
+            {
+                SizeTypeResponseModel responseModel = new SizeTypeResponseModel
+                {
+                    Name = result.Name,
+                    Id = result.Id,
+                };
+                return responseModel;
+            }
         }
 
-        public async Task AddAsync(Size size)
-        {
-            await _sizeTypeRepository.AddAsync(size);
-           
-        }
-        public async Task UpdateAsync(Size size)
-        {
-            await _sizeTypeRepository.UpdateAsync(size);
-        }
-        public async Task DeleteAsync(int id)
-        {
-            await _sizeTypeRepository.DeleteAsync(id);
-        }
+      
     }
 }

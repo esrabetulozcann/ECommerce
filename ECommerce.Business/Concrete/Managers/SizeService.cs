@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.Response.Sizes;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using ECommerce.DataAccess.Models;
@@ -12,41 +13,114 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class SizeService : ISizeService
     {
-        private ISizeRepository _sizeRepository;
+        private readonly ISizeRepository _sizeRepository;
         public SizeService(ISizeRepository sizeRepository)
         {
             _sizeRepository = sizeRepository;
         }
 
+
+        public async Task<List<SizeResponseModel>> GetAllAsync()
+        {
+            var result = await _sizeRepository.GetAllAsync();
+            List<SizeResponseModel> responseModels = new List<SizeResponseModel>();
+            responseModels = result.Select(s => new SizeResponseModel
+            {
+                Id = s.Id,
+                Name = s.Name,
+                SizeTypeId = s.SizeTypeId,
+            }).ToList();
+            return responseModels;
+        }
+
+        public async Task<SizeResponseModel> GetByIdAsync(int id)
+        {
+            var result = await _sizeRepository.GetByIdAsync(id);
+            if(result == null)
+            {
+                return new SizeResponseModel();
+            }
+            else
+            {
+                SizeResponseModel responseModel = new SizeResponseModel
+                {
+                    Id = result.Id,
+                    Name = result.Name,
+                    SizeTypeId = result.SizeTypeId,
+                };
+                return responseModel;
+            }
+        }
+
+        public async Task<SizeResponseModel> GetByNameAsync(string name)
+        {
+            var result = await _sizeRepository.GetByNameAsync(name);
+            if (result == null)
+            {
+                return new SizeResponseModel();
+            }
+            else
+            {
+                SizeResponseModel responseModel = new SizeResponseModel
+                {
+                    Id = result.Id,
+                    Name = result.Name,
+                    SizeTypeId = result.SizeTypeId,
+                };
+                return responseModel;
+            }
+        }
+
+        public async Task<SizeTypeResponseModel> GetBySizeTypeIdAsync(int id)
+        {
+            var result = await _sizeRepository.GetBySizeTypeIdAsync(id);
+            if(result == null)
+            {
+                return new SizeTypeResponseModel();
+            }
+            else
+            {
+                SizeTypeResponseModel responseModel = new SizeTypeResponseModel
+                {
+                    Id = result.Id,
+                    Name = result.Name,
+
+                };
+
+                return responseModel;
+            }
+        }
         public async Task AddAsync(Size size)
         {
+            // Örnek validation: Aynı isimde beden var mı kontrolü
+            var existing = await _sizeRepository.GetByNameAsync(size.Name);
+            if (existing != null)
+                throw new Exception("Bu isimde bir beden zaten mevcut.");
+
             await _sizeRepository.AddAsync(size);
         }
 
         public async Task UpdateAsync(Size size)
         {
-            await _sizeRepository.UpdateAsync(size);
+            var existing = await _sizeRepository.GetByIdAsync(size.Id);
+            if (existing == null)
+                throw new Exception("Güncellenecek beden bulunamadı.");
+
+            // İstersen burada property'leri tek tek atayabilirsin:
+            existing.Name = size.Name;
+            // diğer alanlar varsa onları da güncelle
+
+            await _sizeRepository.UpdateAsync(existing);
         }
         public async Task DeleteAsync(int id)
         {
-             await _sizeRepository.DeleteAsync(id);
+            var existing = await _sizeRepository.GetByIdAsync(id);
+            if (existing == null)
+                throw new Exception("Silinecek beden bulunamadı.");
+
+            await _sizeRepository.DeleteAsync(id);
         }
 
-        public async Task<List<Size>> GetAllAsync()
-        {
-            return await _sizeRepository.GetAllAsync();
-        }
-
-        public async Task<Size> GetByIdAsync(int id)
-        {
-            return await _sizeRepository.GetByIdAsync(id);
-        }
-
-        public async Task<Size> GetByNameAsync(string name)
-        {
-            return await _sizeRepository.GetByNameAsync(name);
-        }
-
-       
+        
     }
 }

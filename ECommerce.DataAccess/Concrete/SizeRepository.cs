@@ -11,10 +11,10 @@ namespace ECommerce.DataAccess.Concrete
 {
     public class SizeRepository : ISizeRepository
     {
-        private EcommerceContext _context;
+         EcommerceContext _context;
         public SizeRepository(EcommerceContext context)
         {
-            _context = context;
+            _context = new();
         }
 
         
@@ -55,6 +55,11 @@ namespace ECommerce.DataAccess.Concrete
                 _context.Sizes.Remove(size);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<SizeType> GetBySizeTypeIdAsync(int id)
+        {
+            return await _context.SizeTypes.Where(st => st.Id == id).FirstOrDefaultAsync();
         }
     }
 }
