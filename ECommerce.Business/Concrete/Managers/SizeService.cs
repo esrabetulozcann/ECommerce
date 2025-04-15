@@ -29,6 +29,11 @@ namespace ECommerce.Business.Concrete.Managers
                 Id = s.Id,
                 Name = s.Name,
                 SizeTypeId = s.SizeTypeId,
+                SizeType = new SizeTypeResponseModel
+                {
+                    Id = s.SizeType.Id,
+                    Name = s.SizeType.Name,
+                }
             }).ToList();
             return responseModels;
         }
@@ -47,6 +52,11 @@ namespace ECommerce.Business.Concrete.Managers
                     Id = result.Id,
                     Name = result.Name,
                     SizeTypeId = result.SizeTypeId,
+                    SizeType = new SizeTypeResponseModel
+                    {
+                        Id = result.Id,
+                        Name = result.Name,
+                    }
                 };
                 return responseModel;
             }
@@ -66,6 +76,11 @@ namespace ECommerce.Business.Concrete.Managers
                     Id = result.Id,
                     Name = result.Name,
                     SizeTypeId = result.SizeTypeId,
+                    SizeType = new SizeTypeResponseModel
+                    {
+                        Id = result.Id,
+                        Name = result.Name,
+                    }
                 };
                 return responseModel;
             }

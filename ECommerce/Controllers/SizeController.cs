@@ -15,6 +15,10 @@ namespace ECommerce.Controllers
             _sizeService = sizeService;
         }
 
+        /// <summary>
+        /// merhabaaaa
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAllSize")]
         public async Task<ActionResult<List<SizeResponseModel>>> GetAllAsync()
         {

@@ -20,7 +20,12 @@ namespace ECommerce.DataAccess.Concrete
 
         public async Task<List<ProductColour>> GetAllAsync()
         {
-            return await _context.ProductColours.ToListAsync();
+            return await _context.ProductColours
+                .Include(pc => pc.Colour)
+                .Include(pc => pc.Product).ThenInclude(p => p.Category)
+                .Include(pc => pc.Product).ThenInclude(p => p.ProductColours).ThenInclude(pc => pc.Colour)
+                .Include(pc => pc.Product).ThenInclude(p => p.ProductSizes).ThenInclude(ps => ps.Size)
+                .ToListAsync();
         }
 
         public async Task<Colour> GetByColourIdAsync(int id)
@@ -30,7 +35,10 @@ namespace ECommerce.DataAccess.Concrete
 
         public async Task<ProductColour> GetByIdAsync(int id)
         {
-            return await _context.ProductColours.Where(pc => pc.Id == id).FirstOrDefaultAsync();
+            return await _context.ProductColours
+                .Include(pc =>pc.Colour)
+                .Include(pc=> pc.Product)
+                .Where(pc => pc.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Product> GetByProductIdAsync(int id)

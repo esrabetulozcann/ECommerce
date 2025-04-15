@@ -11,8 +11,8 @@ namespace ECommerce.Core.Models.Response.Colours
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<ColourResponseModel> Colours { get; set; }
-        public List<ProductResponseModel> Products { get; set; }
+        public ColourResponseModel Colours { get; set; }
+        public ProductResponseModel Products { get; set; }
         public int ProductId { get; set; }
         public int ColourId { get; set; }
     }

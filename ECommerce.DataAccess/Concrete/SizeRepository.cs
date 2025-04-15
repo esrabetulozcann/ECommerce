@@ -17,21 +17,21 @@ namespace ECommerce.DataAccess.Concrete
             _context = new();
         }
 
-        
+
 
         public async Task<List<Size>> GetAllAsync()
         {
-            return await _context.Sizes.ToListAsync();
+            return await _context.Sizes.Include(st => st.SizeType).ToListAsync();
         }
 
         public async Task<Size> GetByIdAsync(int id)
         {
-            return  _context.Sizes.FirstOrDefault(s => s.Id == id);
+            return  _context.Sizes.Include(st => st.SizeType).FirstOrDefault(s => s.Id == id);
         }
 
         public async Task<Size> GetByNameAsync(string name)
         {
-            return  _context.Sizes.FirstOrDefault(s => s.Name == name);
+            return  _context.Sizes.Include(st => st.SizeType).FirstOrDefault(s => s.Name == name);
         }
 
         public async Task AddAsync(Size size)

@@ -21,12 +21,51 @@ namespace ECommerce.Business.Concrete.Managers
 
         public async Task<List<ProductImagesResponseModel>> GetAllImagesAsync()
         {
-            return await _productImagesRepository.GetAllImagesAsync();
+            var result = await _productImagesRepository.GetAllImagesAsync();
+            List<ProductImagesResponseModel> responseModels = new List<ProductImagesResponseModel>();
+            responseModels = result.Select(pi => new ProductImagesResponseModel
+            {
+                Id = pi.Id,
+                ImageUrl = pi.ImageUrl,
+                ProductId = pi.ProductId,
+                Products = new ProductResponseModel
+                {
+                    Id = pi.Product.Id,
+                    Name = pi.Product.Name,
+                    Brand = pi.Product.Brand,
+                    Barcode = pi.Product.Barcode,
+                    Quantity = pi.Product.Quantity,
+                    Price = pi.Product.Price,
+                    Description = pi.Product.Description,
+                }
+            }).ToList();
+            return responseModels;
         }
 
-        public async Task<List<ProductImagesResponseModel>> GetImagesByProductIdAsync(int productId)
+        public async Task<List<ProductImagesResponseModel>> GetImagesByProductIdAsync(int id)
         {
-            return await _productImagesRepository.GetImagesByProductIdAsync(productId);
+            var result = await _productImagesRepository.GetImagesByProductIdAsync(id);
+            List<ProductImagesResponseModel> responseModels = new List<ProductImagesResponseModel>();
+            responseModels = result.Select(pi => new ProductImagesResponseModel
+            {
+                Id = pi.Id,
+                ImageUrl = pi.ImageUrl,
+                ProductId = pi.ProductId,
+                Products = new ProductResponseModel
+                {
+                    Id = pi.Product.Id,
+                    Name = pi.Product.Name,
+                    Barcode = pi.Product.Barcode,
+                    Brand = pi.Product.Brand,
+                    Description = pi.Product.Description,
+                    Price = pi.Product.Price,
+                    Quantity = pi.Product.Quantity,
+                    
+                    
+
+                }
+            }).ToList();
+            return responseModels;
         }
     }
 }

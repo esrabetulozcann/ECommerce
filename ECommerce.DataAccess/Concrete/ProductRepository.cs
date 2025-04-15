@@ -11,22 +11,32 @@ namespace ECommerce.DataAccess.Concrete
 {
     public class ProductRepository : IProductRepository
     {
-        private EcommerceContext _context; // ECommerce dekileri getirdim.
+         EcommerceContext _context; // ECommerce dekileri getirdim.
         public ProductRepository(EcommerceContext context)
         {
-            _context = context;
+            _context = new();
         }
 
-       
+
         public async Task<List<Product>> GetAllAsync()
         {
-            return await _context.Products.ToListAsync(); // Tüm ürünleri listeledim
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductColours).ThenInclude(pc => pc.Colour)
+                .Include(p => p.ProductSizes).ThenInclude(ps => ps.Size)
+                .ToListAsync(); // Tüm ürünleri listeledim
         }
 
 
         public async Task<Product> GetByIdAsync(int id)
         {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id); // Id ye göre listeledim
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductColours)
+                    .ThenInclude(pc => pc.Colour)
+                .Include(p => p.ProductSizes)
+                    .ThenInclude(ps => ps.Size)
+                    .FirstOrDefaultAsync(p => p.Id == id); // Id ye göre listeledim
 
         }
 
@@ -35,7 +45,7 @@ namespace ECommerce.DataAccess.Concrete
             return await _context.Products.FirstOrDefaultAsync(p => p.Name == name); // Name e göre listeledim.
         }
 
-       
+
         public async Task AddAsync(Product product) // Ürürn ekleme işlmei gerçekleştirdim.
         {
             await _context.Products.AddAsync(product);
@@ -48,10 +58,10 @@ namespace ECommerce.DataAccess.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public  async Task DeleteAsync(int id) // Ürürn silme işlemi gerçekleştirdim.
+        public async Task DeleteAsync(int id) // Ürürn silme işlemi gerçekleştirdim.
         {
             var product = await _context.Products.FindAsync(id);
-            if( product != null)
+            if (product != null)
             {
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
@@ -61,13 +71,19 @@ namespace ECommerce.DataAccess.Concrete
         public async Task<List<Product>> GetByCategoryIdAsync(int categoryId) // Category id sine göre listeledim.
         {
             return await _context.Products
-                .Where( p => p.CategoryId == categoryId)
+                .Include(p => p.Category)
+                .Include(p => p.ProductColours).ThenInclude(pc => pc.Colour)
+                .Include(p => p.ProductSizes).ThenInclude(ps => ps.Size)
+                .Where(p => p.CategoryId == categoryId)
                 .ToListAsync();
         }
 
         public async Task<List<Product>> SearchAsync(string keyword) // Arama ismine göre listeledim
         {
             return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductColours).ThenInclude(pc => pc.Colour)
+                .Include(p => p.ProductSizes).ThenInclude(ps => ps.Size)
                 .Where(p => p.Name.Contains(keyword) || p.Description.Contains(keyword))
                 .ToListAsync();
         }

@@ -15,5 +15,6 @@ namespace ECommerce.Core.Models.Response.Sizes
 
         public List<SizeResponseModel> Sizes { get; set; }
         public List<ProductResponseModel> Products { get; set; }
+        public SizeResponseModel Size { get; set; }
     }
 }

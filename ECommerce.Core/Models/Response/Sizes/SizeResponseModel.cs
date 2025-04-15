@@ -11,6 +11,6 @@ namespace ECommerce.Core.Models.Response.Sizes
         public int Id { get; set; }
         public int SizeTypeId { get; set; }
         public String Name { get; set; }
-        public List<SizeTypeResponseModel> SizeType { get; set; }
+        public SizeTypeResponseModel SizeType { get; set; }
     }
 }

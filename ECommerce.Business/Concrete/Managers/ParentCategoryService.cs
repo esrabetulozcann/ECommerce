@@ -24,6 +24,12 @@ namespace ECommerce.Business.Concrete.Managers
             {
                 Id = pc.Id,
                 Name = pc.Name,
+                Categories = pc.Categories.Select(c => new CategoryResponseModel
+                {
+                    Id = c.Id,
+                    ParentCategoryId = c.ParentCategoryId,
+                    Name = c.Name,
+                }).ToList(),
 
             }).ToList();
             return responseModels;

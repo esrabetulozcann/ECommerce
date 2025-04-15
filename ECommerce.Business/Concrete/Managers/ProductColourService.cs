@@ -1,6 +1,8 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.Response.Categories;
 using ECommerce.Core.Models.Response.Colours;
 using ECommerce.Core.Models.Response.Product;
+using ECommerce.Core.Models.Response.Sizes;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
 using ECommerce.DataAccess.Models;
@@ -14,14 +16,14 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class ProductColourService : IProductColourService
     {
-        private readonly IProductColourRepository _productColourRepository;
+        private  IProductColourRepository _productColourRepository;
 
         public ProductColourService(IProductColourRepository productColourRepository)
         {
             _productColourRepository = productColourRepository;
         }
 
-        public async Task<List<ProductColourResponseModel>> GetAllAsync()
+        /*public async Task<List<ProductColourResponseModel>> GetAllAsync()
         {
             var result = await _productColourRepository.GetAllAsync();
             List<ProductColourResponseModel> responseModels = new List<ProductColourResponseModel>();
@@ -29,12 +31,56 @@ namespace ECommerce.Business.Concrete.Managers
             {
                 Id = x.Id,
                 ColourId = x.ColourId,
-                ProductId = x.ProductId,
-                
+                ProductId = x.ProductId,  
+
             }).ToList();
 
             return responseModels;
         }
+        */
+
+
+        public async Task<List<ProductColourResponseModel>> GetAllAsync()
+        {
+            var result = await _productColourRepository.GetAllAsync();
+            List<ProductColourResponseModel> responseModels = new List<ProductColourResponseModel>();
+
+            responseModels = result.Select(x => new ProductColourResponseModel
+            {
+                Id = x.Id,
+                ColourId = x.ColourId,
+                ProductId = x.ProductId,
+                Name = $"{x.Product?.Name} - {x.Colour?.Name}", // Örnek birleşik ad
+
+                // Burada ProductResponseModel'in bir liste yerine tek bir nesne olması gerektiği için List<ProductResponseModel> değil, sadece bir nesne atanıyor
+                Products = x.Product != null
+                    ? new ProductResponseModel
+                    {
+                        Id = x.Product.Id,
+                        Name = x.Product.Name,
+                        Barcode = x.Product.Barcode,
+                        Brand = x.Product.Brand,
+                        CategoryId = x.Product.CategoryId,
+                        Description = x.Product.Description,
+                        Quantity = x.Product.Quantity,
+                        Price = x.Product.Price,
+                    }
+                    : null, // null yapıyoruz çünkü ürün olmayabilir
+
+                // Burada da ColourResponseModel'in bir liste yerine tek bir nesne olması gerektiği için List<ColourResponseModel> değil, sadece bir nesne atanıyor
+                Colours = x.Colour != null
+                    ? new ColourResponseModel
+                    {
+                        Id = x.Colour.Id,
+                        Name = x.Colour.Name,
+                        ProductColurId = x.Id
+                    }
+                    : null // null yapıyoruz çünkü renk olmayabilir
+            }).ToList();
+
+            return responseModels;
+        }
+
 
 
         public async Task<ProductColourResponseModel> GetByIdAsync(int id)
@@ -51,6 +97,16 @@ namespace ECommerce.Business.Concrete.Managers
                     Id = result.Id,
                     ProductId = result.ProductId,
                     ColourId = result.ColourId,
+                    Products = new ProductResponseModel
+                    {
+                        Id = result.Product.Id,
+                        Name = result.Product.Name,
+                    },
+                    Colours = new ColourResponseModel
+                    {
+                        Id = result.Colour.Id,
+                        Name = result.Colour.Name,
+                    }
                 };
                 return responseModel;
             }
@@ -76,18 +132,16 @@ namespace ECommerce.Business.Concrete.Managers
             }
         }
 
-        
-
         public async Task<ProductResponseModel> GetByProductIdAsync(int id)
         {
             var result = await _productColourRepository.GetByProductIdAsync(id);
-            if(result == null)
+            if (result == null)
             {
                 return new ProductResponseModel();
             }
             else
             {
-                ProductResponseModel responseModel = new ProductResponseModel
+                return new ProductResponseModel
                 {
                     Id = result.Id,
                     Barcode = result.Barcode,
@@ -98,9 +152,39 @@ namespace ECommerce.Business.Concrete.Managers
                     Quantity = result.Quantity,
                     Price = result.Price,
 
-                };
+                    Category = result.Category != null
+                    ? new CategoryResponseModel
+                    {
+                        Id = result.Category.Id,
+                        Name = result.Category.Name
+                    }
+                    : null,
 
-                return responseModel;
+                    Colours = result.ProductColours?
+                    .Select(pc => new ProductColourResponseModel
+                    {
+                        Id = pc.Id,
+                        ColourId = pc.Colour.Id,
+                        Name = pc.Colour.Name,
+                        Colours = new ColourResponseModel
+                        {
+                            Id = pc.Colour.Id,
+                            Name = pc.Colour.Name,
+                            ProductColurId = pc.Id
+                        }
+                    }).ToList(), // Burada ProductColourResponseModel bir liste olarak döndürüyoruz
+
+                    Sizes = result.ProductSizes?
+                    .Select(ps => new ProductSizeResponseModel
+                    {
+                        Id = ps.Id,
+                        Size = new SizeResponseModel
+                        {
+                            Id = ps.Size.Id,
+                            Name = ps.Size.Name
+                        }
+                    }).ToList() // Burada ProductSizeResponseModel bir liste olarak döndürüyoruz
+                };
             }
         }
     }

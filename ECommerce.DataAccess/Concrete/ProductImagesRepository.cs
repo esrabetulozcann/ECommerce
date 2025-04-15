@@ -12,33 +12,20 @@ namespace ECommerce.DataAccess.Concrete
 {
     public class ProductImagesRepository : IProductImagesRepository
     {
-        private EcommerceContext _context;
+         EcommerceContext _context;
         public ProductImagesRepository(EcommerceContext context)
         {
-            _context = context;
+            _context = new();
         }
 
-        public async Task<List<ProductImagesResponseModel>> GetAllImagesAsync()
+        public async Task<List<ProductImage>> GetAllImagesAsync()
         {
-            return await _context.ProductImages
-                 .Select(pi => new ProductImagesResponseModel
-                 {
-                     Id = pi.Id,
-                     ProductId = pi.ProductId,
-                     ImageUrl = pi.ImageUrl
-                 }).ToListAsync();
+            return await _context.ProductImages.Include(pi => pi.Product).ToListAsync();
         }
 
-        public async Task<List<ProductImagesResponseModel>> GetImagesByProductIdAsync(int productId)
+        public async Task<List<ProductImage>> GetImagesByProductIdAsync(int id)
         {
-            return await _context.ProductImages
-                .Where(pi => pi.ProductId == productId)
-                .Select(pi => new ProductImagesResponseModel
-                {
-                    Id = pi.Id,
-                    ProductId = pi.ProductId,
-                    ImageUrl = pi.ImageUrl
-                }).ToListAsync();
+            return await _context.ProductImages.Include(pi => pi.Product).ToListAsync();
         }
     }
 }
