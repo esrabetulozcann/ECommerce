@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.DTO;
 using ECommerce.Core.Models.Response.Categories;
 using ECommerce.DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace ECommerce.Controllers
 
 
         [HttpGet("getAll")]
-        public async Task<ActionResult<List<ParentCategoryResponseModel>>> GetAll()
+        public async Task<ActionResult<List<BaseDTO>>> GetAll()
         {
             return await _parentCategoryService.GetAllAsync();
 
@@ -31,7 +32,7 @@ namespace ECommerce.Controllers
 
 
         [HttpGet("{id}/ParentCategory")]
-        public async Task<ActionResult<ParentCategoryResponseModel>> GetById(int id)
+        public async Task<ActionResult<List<ParentCategoryResponseModel>>> GetById(int id)
         {
             if (id == null)
             {

@@ -13,7 +13,6 @@ namespace ECommerce.DataAccess.Abstract
         Task<List<ProductColour>> GetAllAsync();
         Task<ProductColour> GetByIdAsync(int id);
 
-        Task<Colour> GetByColourIdAsync(int id);
-        Task<Product> GetByProductIdAsync(int id);
+      
     }
 }

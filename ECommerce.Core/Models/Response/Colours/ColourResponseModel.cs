@@ -10,7 +10,6 @@ namespace ECommerce.Core.Models.Response.Colours
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ProductColurId { get; set; }
 
     }
 }

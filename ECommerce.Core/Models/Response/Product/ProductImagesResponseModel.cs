@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECommerce.Core.Models.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,6 @@ namespace ECommerce.Core.Models.Response.Product
         public int Id { get; set; }
         public int ProductId { get; set; }
         public String ImageUrl { get; set; }
-        public ProductResponseModel Products { get; set; }
+        public BaseDTO Products { get; set; }
     }
 }

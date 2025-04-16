@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<CategoryResponseModel> Categories { get; set; }
+        public List<CategoryResponseModel> Category { get; set; }
 
 
     }

@@ -45,13 +45,13 @@ namespace ECommerce.DataAccess.Concrete
         {
             return await _context.Products
                 .Include(p=>p.Category)
-                .Include(p=>p.ProductColours).ThenInclude(p=>p.Colour)
-                .Include(p=>p.ProductSizes).ThenInclude(p=>p.Size)
+                .Include(p=>p.ProductColours).ThenInclude(pc=>pc.Colour)
+                .Include(p=>p.ProductSizes).ThenInclude(ps=>ps.Size).ThenInclude(ps => ps.SizeType)
                 .FirstOrDefaultAsync(p => p.Name == name); // Name e göre listeledim.
         }
 
 
-        public async Task AddAsync(Product product) // Ürürn ekleme işlmei gerçekleştirdim.
+        public async Task AddAsync(Product product) // Ürün ekleme işlmei gerçekleştirdim.
         {
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();

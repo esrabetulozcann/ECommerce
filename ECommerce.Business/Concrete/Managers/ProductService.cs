@@ -103,7 +103,7 @@ namespace ECommerce.Business.Concrete.Managers
                     {
                         Id = result.Category.Id,
                         Name = result.Category.Name,
-                        ParentCategoryId = result.Category.ParentCategoryId,
+                        
                     },
 
                     Colours = result.ProductColours?.Select(pc => new BaseDTO
@@ -120,10 +120,6 @@ namespace ECommerce.Business.Concrete.Managers
 
                     }).ToList(),
                     
-
-                    
-
-
                 };
                 return responseModel;
             }
@@ -144,10 +140,27 @@ namespace ECommerce.Business.Concrete.Managers
                     Id = result.Id,
                     Barcode = result.Barcode,
                     Brand = result.Brand,
-                    
                     Description = result.Description,
                     Price = result.Price,
                     Quantity = result.Quantity,
+                    Category = new CategoryResponseModel
+                    {
+                        Id = result.Category.Id,
+                        Name = result.Category.Name,
+                        
+                    },
+
+                    Colours = result.ProductColours?.Select(pc => new BaseDTO
+                    {
+                        Id = pc.Colour.Id,
+                        Name = pc.Colour.Name
+                    }).ToList(),
+
+                    Sizes = result.ProductSizes?.Select(pc => new BaseDTO
+                    {
+                        Id = pc.Size.Id,
+                        Name = pc.Size.Name
+                    }).ToList(),
 
                 };
                 return responseModel;
@@ -165,11 +178,27 @@ namespace ECommerce.Business.Concrete.Managers
                 Description = p.Description,
                 Price = p.Price,
                 Quantity = p.Quantity,
-                
                 Barcode = p.Barcode,
-                Brand = p.Brand
+                Brand = p.Brand,
 
-                // varsa diğer property'leri de ekle
+                Category = new CategoryResponseModel
+                {
+                    Id = p.Category.Id,
+                    Name = p.Category.Name,
+                    
+                },
+
+                Colours = p.ProductColours?.Select(pc => new BaseDTO
+                {
+                    Id = pc.Colour.Id,
+                    Name = pc.Colour.Name
+                }).ToList(),
+
+                Sizes = p.ProductSizes?.Select(pc => new BaseDTO
+                {
+                    Id = pc.Size.Id,
+                    Name = pc.Size.Name
+                }).ToList(),
             }).ToList();
 
             return response;

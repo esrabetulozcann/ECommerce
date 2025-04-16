@@ -23,7 +23,7 @@ namespace ECommerce.Business.Concrete.Managers
             {
                 Id = c.Id,
                 Name = c.Name,
-                ParentCategoryId = c.ParentCategoryId
+                
             }).ToList();
 
             return responseModels;
@@ -43,7 +43,7 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
-                    ParentCategoryId = result.ParentCategoryId
+                    
                 };
 
                 return responseModel;
@@ -64,7 +64,7 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
-                    ParentCategoryId = result.ParentCategoryId
+                    
                 };
 
                 return responseModel;

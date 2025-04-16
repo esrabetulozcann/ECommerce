@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.DTO;
 using ECommerce.Core.Models.Response.Product;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
@@ -28,44 +29,20 @@ namespace ECommerce.Business.Concrete.Managers
                 Id = pi.Id,
                 ImageUrl = pi.ImageUrl,
                 ProductId = pi.ProductId,
-                Products = new ProductResponseModel
+                Products = new BaseDTO
                 {
                     Id = pi.Product.Id,
                     Name = pi.Product.Name,
-                    Brand = pi.Product.Brand,
-                    Barcode = pi.Product.Barcode,
-                    Quantity = pi.Product.Quantity,
-                    Price = pi.Product.Price,
-                    Description = pi.Product.Description,
                 }
+                    
             }).ToList();
             return responseModels;
         }
 
-        public async Task<List<ProductImagesResponseModel>> GetImagesByProductIdAsync(int id)
+        public async Task<ProductImagesResponseModel> GetImagesByProductIdAsync(int id)
         {
-            var result = await _productImagesRepository.GetImagesByProductIdAsync(id);
-            List<ProductImagesResponseModel> responseModels = new List<ProductImagesResponseModel>();
-            responseModels = result.Select(pi => new ProductImagesResponseModel
-            {
-                Id = pi.Id,
-                ImageUrl = pi.ImageUrl,
-                ProductId = pi.ProductId,
-                Products = new ProductResponseModel
-                {
-                    Id = pi.Product.Id,
-                    Name = pi.Product.Name,
-                    Barcode = pi.Product.Barcode,
-                    Brand = pi.Product.Brand,
-                    Description = pi.Product.Description,
-                    Price = pi.Product.Price,
-                    Quantity = pi.Product.Quantity,
-                    
-                    
-
-                }
-            }).ToList();
-            return responseModels;
+            return null;
+            
         }
     }
 }

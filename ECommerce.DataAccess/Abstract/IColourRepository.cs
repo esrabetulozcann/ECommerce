@@ -14,5 +14,7 @@ namespace ECommerce.DataAccess.Abstract
         Task<Colour> GetByIdAsync(int id);
         Task<Colour> GetByNameAsync(string name);
 
+        Task AddAsync(Colour colour);
+
     }
 }

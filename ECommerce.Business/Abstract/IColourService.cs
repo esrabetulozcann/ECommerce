@@ -13,5 +13,7 @@ namespace ECommerce.Business.Abstract
         Task<List<ColourResponseModel>> GetAllAsync();
         Task<ColourResponseModel> GetByIdAsync(int id);
         Task<ColourResponseModel> GetByNameAsync(string name);
+
+        Task AddAsync(Colour colour);
     }
 }

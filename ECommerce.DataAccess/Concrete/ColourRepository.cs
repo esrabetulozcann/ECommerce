@@ -18,9 +18,15 @@ namespace ECommerce.DataAccess.Concrete
             _context = new();
         }
 
+        public async Task AddAsync(Colour colour)
+        {
+            await _context.Colours.AddAsync(colour);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<Colour>> GetAllAsync()
         {
-            return await _context.Colours.ToListAsync();
+            return await _context.Colours.Include(c => c.ProductColours).ToListAsync();
         }
 
         public async Task<Colour> GetByIdAsync(int id)

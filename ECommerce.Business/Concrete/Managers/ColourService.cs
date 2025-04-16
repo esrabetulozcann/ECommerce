@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.DTO;
 using ECommerce.Core.Models.Response.Categories;
 using ECommerce.Core.Models.Response.Colours;
 using ECommerce.DataAccess.Abstract;
@@ -18,6 +19,15 @@ namespace ECommerce.Business.Concrete.Managers
         public ColourService(IColourRepository colourRepository)
         {
             _colourRepository = colourRepository;
+        }
+
+        public async Task AddAsync(Colour colour)
+        {
+            var existing = await _colourRepository.GetByNameAsync(colour.Name);
+            if (existing != null)
+                throw new Exception("Bu isimde bir renk zaten mevcut");
+
+            await _colourRepository.AddAsync(existing);
         }
 
         public async Task<List<ColourResponseModel>> GetAllAsync()
@@ -48,7 +58,7 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
-                    ProductColurId = result.ProductColours.Select(pc => pc.Id).FirstOrDefault(),
+                    //ProductColurId = result.ProductColours.Select(pc => pc.Id).FirstOrDefault(),
                 };
                 return responseModel;
             }
@@ -67,7 +77,7 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
-                    ProductColurId = result.ProductColours.Select(pc => pc.Id).FirstOrDefault(),
+                    //ProductColurId = result.ProductColours.Select(pc => pc.Id).FirstOrDefault(),
                 };
 
                 return responseModel;

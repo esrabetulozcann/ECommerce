@@ -9,7 +9,7 @@ namespace ECommerce.Business.Abstract
 {
     public interface IProductImageService
     {
-        Task<List<ProductImagesResponseModel>> GetImagesByProductIdAsync(int productId);
+        Task<ProductImagesResponseModel> GetImagesByProductIdAsync(int productId);
         Task<List<ProductImagesResponseModel>> GetAllImagesAsync();
     }
 }

@@ -28,10 +28,6 @@ namespace ECommerce.DataAccess.Concrete
                 .ToListAsync();
         }
 
-        public async Task<Colour> GetByColourIdAsync(int id)
-        {
-            return await _context.Colours.Where(c => c.Id == id).FirstOrDefaultAsync();
-        }
 
         public async Task<ProductColour> GetByIdAsync(int id)
         {
@@ -41,9 +37,6 @@ namespace ECommerce.DataAccess.Concrete
                 .Where(pc => pc.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Product> GetByProductIdAsync(int id)
-        {
-            return await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
-        }
+     
     }
 }

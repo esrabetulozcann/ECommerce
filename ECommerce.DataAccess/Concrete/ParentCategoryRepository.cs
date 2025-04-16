@@ -18,9 +18,9 @@ namespace ECommerce.DataAccess.Concrete
             return await _context.ParentCategories.Include(c => c.Categories).ToListAsync(); // Parent category lerin hepsini listeledim.
         }
 
-        public async Task<ParentCategory> GetByIdAsync(int id)
+        public async Task<List<ParentCategory>> GetByIdAsync(int id)
         {
-            return await _context.ParentCategories.Where(pc => pc.Id == id).FirstOrDefaultAsync();
+            return await _context.ParentCategories.Include(pc => pc.Categories).Where(pc => pc.Id == id).ToListAsync();
         }
 
         public async Task<List<ParentCategory>> GetAllWithCategories()

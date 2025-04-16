@@ -3,6 +3,7 @@ using ECommerce.Business.Concrete.Managers;
 using ECommerce.Core.Models.Response.Colours;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
+using ECommerce.DataAccess.Models;
 
 namespace ECommerce.Controllers
 {
@@ -37,6 +38,23 @@ namespace ECommerce.Controllers
         {
             var colours = await _colourService.GetByNameAsync(name);
             return colours;
+        }
+
+
+        [HttpPost] // Yeni renk ekleme
+        public async Task<ActionResult<ColourResponseModel>> AddAsync([FromBody] Colour colour)
+        {
+            try
+            {
+                await _colourService.AddAsync(colour);
+                return Ok("Beden başarıyla eklendi");
+
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
