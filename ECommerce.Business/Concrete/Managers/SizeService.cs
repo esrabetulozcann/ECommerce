@@ -28,7 +28,7 @@ namespace ECommerce.Business.Concrete.Managers
             {
                 Id = s.Id,
                 Name = s.Name,
-                SizeTypeId = s.SizeTypeId,
+                
                 SizeType = new SizeTypeResponseModel
                 {
                     Id = s.SizeType.Id,
@@ -51,7 +51,7 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
-                    SizeTypeId = result.SizeTypeId,
+                    
                     SizeType = new SizeTypeResponseModel
                     {
                         Id = result.Id,
@@ -75,11 +75,11 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
-                    SizeTypeId = result.SizeTypeId,
+                    
                     SizeType = new SizeTypeResponseModel
                     {
-                        Id = result.Id,
-                        Name = result.Name,
+                        Id = result.SizeType.Id,
+                        Name = result.SizeType.Name,
                     }
                 };
                 return responseModel;

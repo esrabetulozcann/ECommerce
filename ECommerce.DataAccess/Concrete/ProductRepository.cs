@@ -36,13 +36,18 @@ namespace ECommerce.DataAccess.Concrete
                     .ThenInclude(pc => pc.Colour)
                 .Include(p => p.ProductSizes)
                     .ThenInclude(ps => ps.Size)
+                    .ThenInclude(ps=> ps.SizeType)
                     .FirstOrDefaultAsync(p => p.Id == id); // Id ye göre listeledim
 
         }
 
         public async Task<Product> GetByNameAsync(string name)
         {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Name == name); // Name e göre listeledim.
+            return await _context.Products
+                .Include(p=>p.Category)
+                .Include(p=>p.ProductColours).ThenInclude(p=>p.Colour)
+                .Include(p=>p.ProductSizes).ThenInclude(p=>p.Size)
+                .FirstOrDefaultAsync(p => p.Name == name); // Name e göre listeledim.
         }
 
 

@@ -1,4 +1,5 @@
-﻿using ECommerce.Core.Models.Response.Categories;
+﻿using ECommerce.Core.Models.DTO;
+using ECommerce.Core.Models.Response.Categories;
 using ECommerce.Core.Models.Response.Colours;
 using ECommerce.Core.Models.Response.Sizes;
 using System;
@@ -19,11 +20,11 @@ namespace ECommerce.Core.Models.Response.Product
         public string Barcode { get; set; }
         public string Brand { get; set; }
 
-        public int CategoryId { get; set; }
+       // public int CategoryId { get; set; }
        // public List<CategoryResponseModel> Categories { get; set; }
         public CategoryResponseModel Category { get; set; } // Tekil olduğu için bu mantıklı
-        public List<ProductColourResponseModel> Colours { get; set; }
-        public List<ProductSizeResponseModel> Sizes { get; set; }
+        public List<BaseDTO> Colours { get; set; }
+        public List<BaseDTO> Sizes { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.DTO;
 using ECommerce.Core.Models.Response.Categories;
 using ECommerce.Core.Models.Response.Colours;
 using ECommerce.Core.Models.Response.Product;
@@ -43,20 +44,17 @@ namespace ECommerce.Business.Concrete.Managers
                     Name = p.Category.Name
                 },
 
-                Colours = p.ProductColours?.Select(pc => new ProductColourResponseModel
+                Colours = p.ProductColours?.Select(pc => new BaseDTO
                 {
                     Id = pc.Colour.Id,
                     Name = pc.Colour.Name
                 }).ToList(),
 
-                Sizes = p.ProductSizes?.Select(ps => new ProductSizeResponseModel
-                {
-                    Id = ps.Size.Id,
-                    Size = new SizeResponseModel
-                    {
+                Sizes = p.ProductSizes?.Select(ps => new BaseDTO
+                { 
                         Id = ps.Size.Id,
                         Name = ps.Size.Name
-                    }
+                    
                 }).ToList()
 
             }).ToList();
@@ -96,10 +94,34 @@ namespace ECommerce.Business.Concrete.Managers
                     Name = result.Name,
                     Barcode = result.Barcode,
                     Brand = result.Brand,
-                    CategoryId = result.CategoryId,
+                    
                     Description = result.Description,
                     Price = result.Price,
                     Quantity = result.Quantity,
+
+                    Category = new CategoryResponseModel
+                    {
+                        Id = result.Category.Id,
+                        Name = result.Category.Name,
+                        ParentCategoryId = result.Category.ParentCategoryId,
+                    },
+
+                    Colours = result.ProductColours?.Select(pc => new BaseDTO
+                    {
+                        Id = pc.Colour.Id,
+                        Name = pc.Colour.Name
+                    }).ToList(),
+
+                    Sizes = result.ProductSizes?.Select(pc => new BaseDTO
+                    {
+                        Id = pc.Size.Id,
+                        Name = pc.Size.Name,
+    
+
+                    }).ToList(),
+                    
+
+                    
 
 
                 };
@@ -122,7 +144,7 @@ namespace ECommerce.Business.Concrete.Managers
                     Id = result.Id,
                     Barcode = result.Barcode,
                     Brand = result.Brand,
-                    CategoryId = result.CategoryId,
+                    
                     Description = result.Description,
                     Price = result.Price,
                     Quantity = result.Quantity,
@@ -143,7 +165,7 @@ namespace ECommerce.Business.Concrete.Managers
                 Description = p.Description,
                 Price = p.Price,
                 Quantity = p.Quantity,
-                CategoryId = p.CategoryId,
+                
                 Barcode = p.Barcode,
                 Brand = p.Brand
 
@@ -155,9 +177,9 @@ namespace ECommerce.Business.Concrete.Managers
 
         public async Task AddAsync(Product product)
         {
-            var existing = await _productRepository.GetByNameAsync(product.Name);
+            var existing = await _productRepository.GetByNameAsync(product.Barcode);
             if(existing != null)
-                throw new Exception("Bu isimde bir ürün zaten mevcut.");
+                throw new Exception("Bu barkod da bir ürün zaten mevcut.");
 
             await _productRepository.AddAsync(existing);
         }

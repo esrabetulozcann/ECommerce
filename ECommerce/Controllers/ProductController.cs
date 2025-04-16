@@ -19,5 +19,21 @@ namespace ECommerce.Controllers
         {
             return await _productService.GetAllAsync();
         }
+
+
+        [HttpGet("{id}/Products")]
+        public async Task<ActionResult<ProductResponseModel>> GetByIdAsync(int id)
+        {
+            return await _productService.GetByIdAsync(id);
+        }
+
+
+        [HttpGet("ProductByName")]
+        public async Task<ActionResult<ProductResponseModel>> GetByNameAsync([FromQuery] string name)
+        {
+            return await _productService.GetByNameAsync(name);
+        }
+
+
     }
 }

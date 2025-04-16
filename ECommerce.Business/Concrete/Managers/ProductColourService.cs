@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.DTO;
 using ECommerce.Core.Models.Response.Categories;
 using ECommerce.Core.Models.Response.Colours;
 using ECommerce.Core.Models.Response.Product;
@@ -16,7 +17,7 @@ namespace ECommerce.Business.Concrete.Managers
 {
     public class ProductColourService : IProductColourService
     {
-        private  IProductColourRepository _productColourRepository;
+        private IProductColourRepository _productColourRepository;
 
         public ProductColourService(IProductColourRepository productColourRepository)
         {
@@ -60,7 +61,7 @@ namespace ECommerce.Business.Concrete.Managers
                         Name = x.Product.Name,
                         Barcode = x.Product.Barcode,
                         Brand = x.Product.Brand,
-                        CategoryId = x.Product.CategoryId,
+                       
                         Description = x.Product.Description,
                         Quantity = x.Product.Quantity,
                         Price = x.Product.Price,
@@ -114,7 +115,7 @@ namespace ECommerce.Business.Concrete.Managers
         public async Task<ColourResponseModel> GetByColourIdAsync(int id)
         {
             var result = await _productColourRepository.GetByColourIdAsync(id);
-            if(result == null)
+            if (result == null)
             {
                 return new ColourResponseModel();
             }
@@ -128,7 +129,7 @@ namespace ECommerce.Business.Concrete.Managers
 
                 };
                 return responseModel;
-               
+
             }
         }
 
@@ -146,7 +147,7 @@ namespace ECommerce.Business.Concrete.Managers
                     Id = result.Id,
                     Barcode = result.Barcode,
                     Brand = result.Brand,
-                    CategoryId = result.CategoryId,
+                    
                     Name = result.Name,
                     Description = result.Description,
                     Quantity = result.Quantity,
@@ -161,28 +162,20 @@ namespace ECommerce.Business.Concrete.Managers
                     : null,
 
                     Colours = result.ProductColours?
-                    .Select(pc => new ProductColourResponseModel
+                    .Select(pc => new BaseDTO
                     {
-                        Id = pc.Id,
-                        ColourId = pc.Colour.Id,
+                        Id = pc.Colour.Id,
                         Name = pc.Colour.Name,
-                        Colours = new ColourResponseModel
-                        {
-                            Id = pc.Colour.Id,
-                            Name = pc.Colour.Name,
-                            ProductColurId = pc.Id
-                        }
+                       
                     }).ToList(), // Burada ProductColourResponseModel bir liste olarak döndürüyoruz
 
                     Sizes = result.ProductSizes?
-                    .Select(ps => new ProductSizeResponseModel
+                    .Select(ps => new BaseDTO
                     {
-                        Id = ps.Id,
-                        Size = new SizeResponseModel
-                        {
-                            Id = ps.Size.Id,
-                            Name = ps.Size.Name
-                        }
+
+                        Id = ps.Size.Id,
+                        Name = ps.Size.Name,
+                        
                     }).ToList() // Burada ProductSizeResponseModel bir liste olarak döndürüyoruz
                 };
             }

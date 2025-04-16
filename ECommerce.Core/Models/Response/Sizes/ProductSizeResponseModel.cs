@@ -11,10 +11,11 @@ namespace ECommerce.Core.Models.Response.Sizes
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
-        public int SizeId { get; set; }
+        //public string SizeName { get; set; }
+        //public int SizeId { get; set; }
 
         public List<SizeResponseModel> Sizes { get; set; }
-        public List<ProductResponseModel> Products { get; set; }
-        public SizeResponseModel Size { get; set; }
+        //public List<ProductResponseModel> Products { get; set; }
+        //public SizeResponseModel Size { get; set; }
     }
 }
