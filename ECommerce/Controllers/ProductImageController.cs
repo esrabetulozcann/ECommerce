@@ -21,7 +21,7 @@ namespace ECommerce.Controllers
         }
 
         [HttpGet("{id}/productImageId")]
-        public async Task<ActionResult<List<ProductImagesResponseModel>>> GetByIdAsync(int id)
+        public async Task<ActionResult<ProductImagesResponseModel>> GetByIdAsync(int id)
         {
             return await _productImageService.GetImagesByProductIdAsync(id);
         }
