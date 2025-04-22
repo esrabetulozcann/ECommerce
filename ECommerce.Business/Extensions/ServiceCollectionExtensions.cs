@@ -20,7 +20,10 @@ namespace ECommerce.Business.Extensions
             services.AddScoped<IProductSizeService, ProductSizeService>();
             services.AddScoped<ISizeService, SizeService>();
             services.AddScoped<ISizeTypeService, SizeTypeService>();
-
+            services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ITownService, TownService>();
+            services.AddScoped<IDistrictService, DistrictService>();
 
             return services;
         }

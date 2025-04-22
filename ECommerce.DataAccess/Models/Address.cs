@@ -21,6 +21,8 @@ public partial class Address
 
     public string AddressText { get; set; } = null!;
 
+    public bool IsDelete { get; set; }
+
     public virtual City City { get; set; } = null!;
 
     public virtual Country Country { get; set; } = null!;
@@ -28,6 +30,8 @@ public partial class Address
     public virtual District District { get; set; } = null!;
 
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual Town Town { get; set; } = null!;
 

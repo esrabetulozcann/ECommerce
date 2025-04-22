@@ -1,4 +1,5 @@
-﻿using ECommerce.Core.Models.Response.Users;
+﻿using ECommerce.Core.Models.Request.User;
+using ECommerce.Core.Models.Response.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,9 @@ namespace ECommerce.Core.Models.Response.Orders
         public int UserId { get; set; }
         public int AddressId { get; set; }
         public bool Status { get; set; }
-        public UserResponseModel? User { get; set; } // Tekil kullanıcı bilgisi
         public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
 
-        // İlişkili order items'ları istersen:
-        public List<OrderItemResponseModel>? OrderItems { get; set; }
-        public List<UserResponseModel> Users { get; set; }
+        public UserRequestModel Users { get; set; }
     }
 }

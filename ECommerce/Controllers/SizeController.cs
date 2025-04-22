@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.Request.Size;
 using ECommerce.Core.Models.Response.Sizes;
 using ECommerce.DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -51,14 +52,12 @@ namespace ECommerce.Controllers
 
 
         [HttpPost] // Yeni beden ekleme alanı
-        public async Task<ActionResult<SizeResponseModel>> AddAsync([FromBody] Size size)
+        public async Task<ActionResult<SizeResponseModel>> AddAsync([FromBody] SizeRequestModel model)
         {
             try
             {
-                await _sizeService.AddAsync(size);
+                await _sizeService.AddAsync(model);
                 return Ok("Beden başarıyla eklendi");
-
-
             }
             catch (Exception ex)
             {
@@ -67,12 +66,25 @@ namespace ECommerce.Controllers
         }
 
 
-        [HttpPut] // Bedeni güncellemek için
-        public async Task<ActionResult<SizeResponseModel>> UpdateAsync([FromBody] Size size)
+        [HttpPut("{id} - update")] // Bedeni güncellemek için
+        public async Task<ActionResult<SizeResponseModel>> UpdateAsync(int id, [FromBody] SizeRequestModel model)
         {
             try
             {
-                await _sizeService.UpdateAsync(size);
+                // Size nesnesini kendimiz oluşturuyoruz:
+                var updatedSize = new Size
+                {
+                    Id = id,
+                    Name = model.Name,
+                    SizeTypeId = model.SizeTypeId,
+                    IsDelete = model.IsDelete,
+                    ProductSizes = model.productSizes.Select(ps => new ProductSize
+                    {
+                        ProductId = ps.ProductId
+                    }).ToList()
+                };
+
+                await _sizeService.UpdateAsync(updatedSize);
                 return Ok("Beden başarıyla güncellendi");
             }
             catch (Exception ex)

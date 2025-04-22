@@ -19,6 +19,7 @@ namespace ECommerce.Core.Models.Response.Product
         public decimal Price { get; set; }
         public string Barcode { get; set; }
         public string Brand { get; set; }
+        public bool IsDelete { get; set; }
 
        // public int CategoryId { get; set; }
        // public List<CategoryResponseModel> Categories { get; set; }

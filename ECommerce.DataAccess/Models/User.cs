@@ -25,6 +25,8 @@ public partial class User
 
     public string PhoneNumber2 { get; set; } = null!;
 
+    public bool IsDelete { get; set; }
+
     public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();

@@ -143,10 +143,9 @@ public partial class EcommerceContext : DbContext
 
         modelBuilder.Entity<City>(entity =>
         {
-            entity.Property(e => e.City1)
+            entity.Property(e => e.Name)
                 .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("City");
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Country).WithMany(p => p.Cities)
                 .HasForeignKey(d => d.CountryId)
@@ -165,18 +164,16 @@ public partial class EcommerceContext : DbContext
 
         modelBuilder.Entity<Country>(entity =>
         {
-            entity.Property(e => e.Country1)
+            entity.Property(e => e.Name)
                 .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("Country");
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<District>(entity =>
         {
-            entity.Property(e => e.District1)
+            entity.Property(e => e.Name)
                 .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("District");
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Town).WithMany(p => p.Districts)
                 .HasForeignKey(d => d.TownId)
@@ -231,6 +228,11 @@ public partial class EcommerceContext : DbContext
         {
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.TotalPrice).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Address).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.AddressId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Orders_Address");
 
             entity.HasOne(d => d.User).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.UserId)
@@ -309,7 +311,7 @@ public partial class EcommerceContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Product_Categories");
+                .HasConstraintName("FK_Product_Categories1");
         });
 
         modelBuilder.Entity<ProductColour>(entity =>
@@ -336,7 +338,7 @@ public partial class EcommerceContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.ProductImages)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProductImages_Product");
+                .HasConstraintName("FK_ProductImages_Product1");
         });
 
         modelBuilder.Entity<ProductSize>(entity =>
@@ -377,10 +379,9 @@ public partial class EcommerceContext : DbContext
 
         modelBuilder.Entity<Town>(entity =>
         {
-            entity.Property(e => e.Town1)
+            entity.Property(e => e.Name)
                 .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("Town");
+                .IsUnicode(false);
 
             entity.HasOne(d => d.City).WithMany(p => p.Towns)
                 .HasForeignKey(d => d.CityId)

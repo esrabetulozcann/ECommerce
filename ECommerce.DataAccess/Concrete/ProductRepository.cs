@@ -68,8 +68,9 @@ namespace ECommerce.DataAccess.Concrete
             var product = await _context.Products.FindAsync(id);
             if (product != null)
             {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+                product.IsDelete = true;
+                _context.Products.Update(product);
+               await _context.SaveChangesAsync();
             }
         }
 

@@ -13,5 +13,6 @@ namespace ECommerce.Core.Models.Response.Product
         public int ProductId { get; set; }
         public String ImageUrl { get; set; }
         public BaseDTO Products { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

@@ -37,6 +37,7 @@ namespace ECommerce.Business.Concrete.Managers
                 Description = p.Description,
                 Price = p.Price,
                 Quantity = p.Quantity,
+                IsDelete = p.IsDelete,
 
                 Category = p.Category == null ? null : new CategoryResponseModel
                 {
@@ -98,6 +99,7 @@ namespace ECommerce.Business.Concrete.Managers
                     Description = result.Description,
                     Price = result.Price,
                     Quantity = result.Quantity,
+                    IsDelete = result.IsDelete,
 
                     Category = new CategoryResponseModel
                     {
@@ -143,6 +145,7 @@ namespace ECommerce.Business.Concrete.Managers
                     Description = result.Description,
                     Price = result.Price,
                     Quantity = result.Quantity,
+                    IsDelete = result.IsDelete,
                     Category = new CategoryResponseModel
                     {
                         Id = result.Category.Id,
@@ -180,6 +183,7 @@ namespace ECommerce.Business.Concrete.Managers
                 Quantity = p.Quantity,
                 Barcode = p.Barcode,
                 Brand = p.Brand,
+                IsDelete= p.IsDelete,
 
                 Category = new CategoryResponseModel
                 {
@@ -227,7 +231,7 @@ namespace ECommerce.Business.Concrete.Managers
         public async Task DeleteAsync(int id)
         {
             var existing = await _productRepository.GetByIdAsync(id);
-            if (existing != null)
+            if (existing == null)
                 throw new Exception("Silinecek beden bulunamadı");
 
             await _productRepository.DeleteAsync(id);

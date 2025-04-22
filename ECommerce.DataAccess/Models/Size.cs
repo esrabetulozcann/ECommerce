@@ -11,6 +11,8 @@ public partial class Size
 
     public string Name { get; set; } = null!;
 
+    public bool IsDelete { get; set; }
+
     public virtual ICollection<ProductSize> ProductSizes { get; set; } = new List<ProductSize>();
 
     public virtual SizeType SizeType { get; set; } = null!;

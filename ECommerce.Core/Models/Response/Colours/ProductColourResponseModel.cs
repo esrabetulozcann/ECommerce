@@ -13,6 +13,7 @@ namespace ECommerce.Core.Models.Response.Colours
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public List<BaseDTO> Colours { get; set; }
+        public bool IsDelete { get; set; }  
     
     }
 }

@@ -18,14 +18,43 @@ namespace ECommerce.DataAccess.Concrete
             _context = new();
         }
 
+        
+
         public async Task<List<ProductImage>> GetAllImagesAsync()
         {
             return await _context.ProductImages.Include(pi => pi.Product).ToListAsync();
         }
 
-        public async Task<List<ProductImage>> GetImagesByProductIdAsync(int id)
+        public async Task<ProductImage> GetImagesByProductIdAsync(int id)
         {
-            return await _context.ProductImages.Include(pi => pi.Product).ToListAsync();
+            return await _context.ProductImages.Include(pi => pi.Product).FirstOrDefaultAsync();
         }
+
+
+        public async Task AddAsync(ProductImage productImage)
+        {
+            await _context.ProductImages.AddAsync(productImage);
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task UpdateAsync(ProductImage productImage)
+        {
+            _context.ProductImages.Update(productImage);
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task DeleteAsync(int id)
+        {
+            var productImages = await _context.ProductImages.FindAsync(id);
+            if(productImages != null)
+            {
+                productImages.IsDelete = true;
+                _context.ProductImages.Update(productImages);
+                await _context.SaveChangesAsync();
+            }
+        }
+        
     }
 }

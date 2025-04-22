@@ -1,4 +1,5 @@
-﻿using ECommerce.Core.Models.Response.Sizes;
+﻿using ECommerce.Core.Models.Request.Size;
+using ECommerce.Core.Models.Response.Sizes;
 using ECommerce.DataAccess.Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace ECommerce.Business.Abstract
         Task<SizeResponseModel> GetByIdAsync(int id); // ID'ye göre beden getirir
         Task<SizeResponseModel> GetByNameAsync(string name); // İsme göre beden getirir (örneğin: "M", "L", "XL")
         Task<SizeTypeResponseModel> GetBySizeTypeIdAsync(int id); // SizeType id sine göre getirecek.
-        Task AddAsync(Size size); // Yeni beden ekler
+        Task AddAsync(SizeRequestModel model); // Yeni beden ekler
         Task UpdateAsync(Size size); // Var olan bedeni günceller
         Task DeleteAsync(int id); // Beden siler
     }

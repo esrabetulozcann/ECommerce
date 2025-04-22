@@ -1,4 +1,5 @@
 ﻿using ECommerce.Core.Models.Response.Product;
+using ECommerce.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,8 @@ namespace ECommerce.Business.Abstract
     {
         Task<ProductImagesResponseModel> GetImagesByProductIdAsync(int productId);
         Task<List<ProductImagesResponseModel>> GetAllImagesAsync();
+        Task AddAsync(ProductImage productImage);
+        Task UpdateAsync(ProductImage productImage);
+        Task DeleteAsync(int id); // Ürünleri db den silme pasife al.
     }
 }

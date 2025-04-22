@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.Request.Size;
 using ECommerce.Core.Models.Response.Sizes;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
@@ -28,6 +29,7 @@ namespace ECommerce.Business.Concrete.Managers
             {
                 Id = s.Id,
                 Name = s.Name,
+                IsDelete = s.IsDelete,
                 
                 SizeType = new SizeTypeResponseModel
                 {
@@ -51,11 +53,12 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
+                    IsDelete = result.IsDelete,
                     
                     SizeType = new SizeTypeResponseModel
                     {
-                        Id = result.Id,
-                        Name = result.Name,
+                        Id = result.SizeType.Id,
+                        Name = result.SizeType.Name,
                     }
                 };
                 return responseModel;
@@ -75,6 +78,7 @@ namespace ECommerce.Business.Concrete.Managers
                 {
                     Id = result.Id,
                     Name = result.Name,
+                    IsDelete = result.IsDelete,
                     
                     SizeType = new SizeTypeResponseModel
                     {
@@ -105,14 +109,20 @@ namespace ECommerce.Business.Concrete.Managers
                 return responseModel;
             }
         }
-        public async Task AddAsync(Size size)
+        public async Task AddAsync(SizeRequestModel model)
         {
-            // Örnek validation: Aynı isimde beden var mı kontrolü
-            var existing = await _sizeRepository.GetByNameAsync(size.Name);
-            if (existing != null)
-                throw new Exception("Bu isimde bir beden zaten mevcut.");
+            var newSize = new Size
+            {
+                Name = model.Name,
+                SizeTypeId = model.SizeTypeId,
+                IsDelete = model.IsDelete,
+                ProductSizes = model.productSizes.Select(ps => new ProductSize
+                {
+                    ProductId = ps.ProductId,
+                }).ToList()
+            };
 
-            await _sizeRepository.AddAsync(size);
+            await _sizeRepository.AddAsync(newSize);
         }
 
         public async Task UpdateAsync(Size size)
@@ -123,6 +133,12 @@ namespace ECommerce.Business.Concrete.Managers
 
             // İstersen burada property'leri tek tek atayabilirsin:
             existing.Name = size.Name;
+            existing.SizeTypeId = size.SizeTypeId;
+            existing.IsDelete = size.IsDelete;
+            existing.ProductSizes = size.ProductSizes.Select(ps => new ProductSize
+            {
+                ProductId = ps.ProductId,
+            }).ToList();
             // diğer alanlar varsa onları da güncelle
 
             await _sizeRepository.UpdateAsync(existing);
@@ -136,6 +152,6 @@ namespace ECommerce.Business.Concrete.Managers
             await _sizeRepository.DeleteAsync(id);
         }
 
-        
+     
     }
 }

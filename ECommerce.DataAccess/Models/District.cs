@@ -9,7 +9,7 @@ public partial class District
 
     public int TownId { get; set; }
 
-    public string District1 { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
 

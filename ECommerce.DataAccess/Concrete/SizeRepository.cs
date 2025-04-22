@@ -52,7 +52,8 @@ namespace ECommerce.DataAccess.Concrete
             var size = await _context.Sizes.FindAsync(id);
             if(size != null)
             {
-                _context.Sizes.Remove(size);
+                size.IsDelete = true;
+                _context.Sizes.Update(size);
                 await _context.SaveChangesAsync();
             }
         }

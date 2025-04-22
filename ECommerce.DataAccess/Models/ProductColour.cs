@@ -11,6 +11,8 @@ public partial class ProductColour
 
     public int ColourId { get; set; }
 
+    public bool IsDelete { get; set; }
+
     public virtual Colour Colour { get; set; } = null!;
 
     public virtual Product Product { get; set; } = null!;

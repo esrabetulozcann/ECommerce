@@ -18,6 +18,8 @@ namespace ECommerce.DataAccess.Concrete
             _context = new();
         }
 
+        
+
         public async Task<List<ProductColour>> GetAllAsync()
         {
             return await _context.ProductColours
@@ -37,6 +39,30 @@ namespace ECommerce.DataAccess.Concrete
                 .Where(pc => pc.Id == id).FirstOrDefaultAsync();
         }
 
-     
+
+        public async Task AddAsync(ProductColour productColour)
+        {
+            await _context.ProductColours.AddAsync(productColour);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(ProductColour productColour)
+        {
+             _context.ProductColours.Update(productColour);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var productColour = await _context.ProductColours.FindAsync(id);
+            if(productColour != null)
+            {
+                productColour.IsDelete = true;
+                _context.ProductColours.Update(productColour);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+       
     }
 }

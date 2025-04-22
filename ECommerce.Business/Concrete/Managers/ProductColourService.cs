@@ -24,8 +24,7 @@ namespace ECommerce.Business.Concrete.Managers
             _productColourRepository = productColourRepository;
         }
 
-
-
+        
         public async Task<List<ProductColourResponseModel>> GetAllAsync()
         {
             var result = await _productColourRepository.GetAllAsync();
@@ -35,6 +34,7 @@ namespace ECommerce.Business.Concrete.Managers
             {
                 ProductId = x.ProductId,
                 ProductName = x.Product.Name,
+                IsDelete = x.IsDelete,
                 Colours = x.Colour.ProductColours.Select(c => new BaseDTO
                 {
                     Id = c.Colour.Id,
@@ -58,6 +58,7 @@ namespace ECommerce.Business.Concrete.Managers
             {
                 ProductId = result.Product.Id,
                 ProductName = result.Product.Name,
+                IsDelete= result.IsDelete,
                 Colours = result.Colour.ProductColours.Select(c => new BaseDTO
                 {
                     Id = c.Colour.Id,
@@ -69,6 +70,37 @@ namespace ECommerce.Business.Concrete.Managers
         }
 
 
+        public async Task AddAsync(ProductColour productColour)
+        {
+            var exististing = await _productColourRepository.GetByIdAsync(productColour.Id);
+            if (exististing != null)
+                throw new Exception("Bu ürünün rengi var.");
+
+            await _productColourRepository.AddAsync(exististing);
+        }
+
+       
+
+        public async Task UpdateAsync(ProductColour productColour)
+        {
+            var exististing = await _productColourRepository.GetByIdAsync(productColour.Id);
+            if (exististing != null)
+                throw new Exception("Güncellenecek ürün rengi bulunamadı");
+
+            exististing.Colour = productColour.Colour;
+
+            await _productColourRepository.UpdateAsync(exististing);
+        }
+
+
+        public async Task DeleteAsync(int id)
+        {
+            var exististing = await _productColourRepository.GetByIdAsync(id);
+            if (exististing == null)
+                throw new Exception("Silinecek ürün rengi bulunamadı.");
+
+            await _productColourRepository.DeleteAsync(id);
+        }
     }
         
 

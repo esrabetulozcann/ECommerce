@@ -11,5 +11,7 @@ public partial class ProductImage
 
     public string ImageUrl { get; set; } = null!;
 
+    public bool IsDelete { get; set; }
+
     public virtual Product Product { get; set; } = null!;
 }

@@ -18,6 +18,10 @@ namespace ECommerce.DataAccess.Extensions
             services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
             services.AddScoped<ISizeRepository, SizeRepository>();
             services.AddScoped<ISizeTypeRepository, SizeTypeRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<ICityRepository, CityRepository>();
+            services.AddScoped<ITownRepository, TownRepository>();
+            services.AddScoped< IDistrictRepository, DistrictRepository>();
 
             return services;
 
