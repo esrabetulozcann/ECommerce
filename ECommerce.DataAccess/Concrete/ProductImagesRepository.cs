@@ -27,7 +27,9 @@ namespace ECommerce.DataAccess.Concrete
 
         public async Task<ProductImage> GetImagesByProductIdAsync(int id)
         {
-            return await _context.ProductImages.Include(pi => pi.Product).FirstOrDefaultAsync();
+            return await _context.ProductImages
+                .Include(pi => pi.Product)
+                .FirstOrDefaultAsync(pi => pi.ProductId == id);
         }
 
 
@@ -55,6 +57,10 @@ namespace ECommerce.DataAccess.Concrete
                 await _context.SaveChangesAsync();
             }
         }
-        
+
+        public async Task<ProductImage> GetByImageUrlAsync(string imageUrl)
+        {
+            return await _context.ProductImages.FirstOrDefaultAsync(pi => pi.ImageUrl == imageUrl);
+        }
     }
 }

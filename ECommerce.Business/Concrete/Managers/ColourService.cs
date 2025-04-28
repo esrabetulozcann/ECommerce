@@ -27,7 +27,7 @@ namespace ECommerce.Business.Concrete.Managers
             if (existing != null)
                 throw new Exception("Bu isimde bir renk zaten mevcut");
 
-            await _colourRepository.AddAsync(existing);
+            await _colourRepository.AddAsync(colour);
         }
 
         public async Task<List<ColourResponseModel>> GetAllAsync()

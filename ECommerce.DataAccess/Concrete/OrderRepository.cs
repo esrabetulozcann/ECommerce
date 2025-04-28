@@ -43,11 +43,17 @@ namespace ECommerce.DataAccess.Concrete
                 .FirstOrDefaultAsync();
         }
 
-        public async Task AddAsync(Order order)
+        public async Task<int> AddAsync(Order order)
         {
             await _context.Orders .AddAsync(order);
-            await _context.SaveChangesAsync();
+             await _context.SaveChangesAsync();
+            return order.Id;
         }
 
+        public async Task UpdateAsync(Order order)
+        {
+             _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -20,9 +20,6 @@ namespace ECommerce.Core.Models.Response.Product
         public string Barcode { get; set; }
         public string Brand { get; set; }
         public bool IsDelete { get; set; }
-
-       // public int CategoryId { get; set; }
-       // public List<CategoryResponseModel> Categories { get; set; }
         public CategoryResponseModel Category { get; set; } // Tekil olduğu için bu mantıklı
         public List<BaseDTO> Colours { get; set; }
         public List<BaseDTO> Sizes { get; set; }

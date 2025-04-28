@@ -1,4 +1,5 @@
-﻿using ECommerce.Core.Models.Request.User;
+﻿using ECommerce.Core.Models.Request.OrderItem;
+using ECommerce.Core.Models.Request.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace ECommerce.Core.Models.Request.Order
         public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
 
-        public UserRequestModel User { get; set; }
+        public List<OrderItemAddRequestModel> OrderItems { get; set; } 
+
+       // public UserRequestModel User { get; set; }
     }
 }

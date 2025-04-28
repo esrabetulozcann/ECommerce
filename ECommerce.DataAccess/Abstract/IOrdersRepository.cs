@@ -15,6 +15,8 @@ namespace ECommerce.DataAccess.Abstract
         Task<List<Order>> GetAllOrdersAsync();
         Task<Order> GetOrderByIdAsync(int id);
         Task<List<Order>> GetByUserIdAsync(int id);
-        Task AddAsync(Order order);
+        Task<int> AddAsync(Order order);
+        Task UpdateAsync(Order order);
+
     }
 }

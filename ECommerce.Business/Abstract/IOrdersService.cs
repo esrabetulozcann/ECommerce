@@ -1,4 +1,5 @@
-﻿using ECommerce.Core.Models.Response.Orders;
+﻿using ECommerce.Core.Models.Request.Order;
+using ECommerce.Core.Models.Response.Orders;
 using ECommerce.Core.Models.Response.Users;
 using ECommerce.DataAccess.Models;
 using System;
@@ -15,6 +16,6 @@ namespace ECommerce.Business.Abstract
         Task<OrdersResponseModel> GetOrderByIdAsync(int id);
         Task<List<OrdersResponseModel>> GetByUserIdAsync(int id);
 
-        Task AddAsync(Order order);
+        Task AddAsync(OrderAddRequestModel order);
     }
 }

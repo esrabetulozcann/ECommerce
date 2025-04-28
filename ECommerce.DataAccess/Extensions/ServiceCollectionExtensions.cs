@@ -22,6 +22,11 @@ namespace ECommerce.DataAccess.Extensions
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<ITownRepository, TownRepository>();
             services.AddScoped< IDistrictRepository, DistrictRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<IPaymentTypeRepository, PaymentTypeRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
 
             return services;
 

@@ -1,4 +1,5 @@
-﻿using ECommerce.Core.Models.Response.Product;
+﻿using ECommerce.Core.Models.Request.Product;
+using ECommerce.Core.Models.Response.Product;
 using ECommerce.DataAccess.Models;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ namespace ECommerce.Business.Abstract
         Task<List<ProductResponseModel>> GetAllAsync();
         Task<ProductResponseModel> GetByIdAsync(int id);
         Task<ProductResponseModel> GetByNameAsync(string name);
-        Task AddAsync(Product product);
-        Task UpdateAsync(Product product);
+        Task AddAsync(ProductRequestModel model);
+        Task UpdateAsync(ProductRequestModel model, int id);
         Task DeleteAsync(int id); // Ürünleri db den silme pasife al.
 
         Task<List<ProductResponseModel>> GetByCategoryIdAsync(int categoryId);

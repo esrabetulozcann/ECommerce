@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.DTO;
+using ECommerce.Core.Models.Request.ProductColour;
 using ECommerce.Core.Models.Response.Categories;
 using ECommerce.Core.Models.Response.Colours;
 using ECommerce.Core.Models.Response.Product;
@@ -18,10 +19,17 @@ namespace ECommerce.Business.Concrete.Managers
     public class ProductColourService : IProductColourService
     {
         private IProductColourRepository _productColourRepository;
+        private IProductRepository _productRepository;
+        private IColourRepository _colourRepository;
 
-        public ProductColourService(IProductColourRepository productColourRepository)
+        public ProductColourService(
+            IProductColourRepository productColourRepository,
+            IProductRepository productRepository,
+            IColourRepository colourRepository)
         {
             _productColourRepository = productColourRepository;
+            _productRepository = productRepository;
+            _colourRepository = colourRepository;
         }
 
         
@@ -69,27 +77,51 @@ namespace ECommerce.Business.Concrete.Managers
             return responseModel;
         }
 
-
-        public async Task AddAsync(ProductColour productColour)
+        public async Task AddAsync(ProductColourRequestModel model)
         {
-            var exististing = await _productColourRepository.GetByIdAsync(productColour.Id);
-            if (exististing != null)
-                throw new Exception("Bu ürünün rengi var.");
+            var product = await _productRepository.GetByNameAsync(model.ProductName);
+            if (product == null)
+                throw new Exception("Ürün bulunamadı.");
 
-            await _productColourRepository.AddAsync(exististing);
+            var colour = await _colourRepository.GetByNameAsync(model.ColourName);
+            if (colour == null)
+                throw new Exception("Renk bulunamadı.");
+
+            // Aynı ürün ve renk daha önce eşleştirilmiş mi?
+            var allProductColours = await _productColourRepository.GetAllAsync();
+            var isExist = allProductColours.Any(pc => pc.ProductId == product.Id && pc.ColourId == colour.Id);
+
+            if (isExist)
+                throw new Exception("Bu ürün-rengi eşlemesi zaten var.");
+
+            var newProductColour = new ProductColour
+            {
+                ProductId = product.Id,
+                ColourId = colour.Id,
+                IsDelete = false
+            };
+
+            await _productColourRepository.AddAsync(newProductColour);
         }
 
        
 
-        public async Task UpdateAsync(ProductColour productColour)
+        public async Task UpdateAsync(ProductColourRequestModel model)
         {
-            var exististing = await _productColourRepository.GetByIdAsync(productColour.Id);
-            if (exististing != null)
-                throw new Exception("Güncellenecek ürün rengi bulunamadı");
+            var product = await _productRepository.GetByNameAsync(model.ProductName);
+            if (product == null)
+                throw new Exception("Ürün bulunamadı.");
 
-            exististing.Colour = productColour.Colour;
+            var colour = await _colourRepository.GetByNameAsync(model.ColourName);
+            if (colour == null)
+                throw new Exception("Renk bulunamadı.");
 
-            await _productColourRepository.UpdateAsync(exististing);
+            var existing = await _productColourRepository.GetByIdAsync(product.Id);
+            if (existing == null)
+                throw new Exception("Ürün rengi bulunamadı.");
+
+            existing.ColourId = colour.Id;
+            await _productColourRepository.UpdateAsync(existing);
         }
 
 

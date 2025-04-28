@@ -24,6 +24,11 @@ namespace ECommerce.Business.Extensions
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<ITownService, TownService>();
             services.AddScoped<IDistrictService, DistrictService>();
+            services.AddScoped<IOrderItemService, OrderItemService>();
+            services.AddScoped<IPaymentTypeService, PaymentTypeService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartItemService, CartItemService>();
 
             return services;
         }

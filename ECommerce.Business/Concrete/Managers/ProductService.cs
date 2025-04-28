@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.DTO;
+using ECommerce.Core.Models.Request.Product;
 using ECommerce.Core.Models.Response.Categories;
 using ECommerce.Core.Models.Response.Colours;
 using ECommerce.Core.Models.Response.Product;
@@ -18,9 +19,18 @@ namespace ECommerce.Business.Concrete.Managers
     public class ProductService : IProductService
     {
         private IProductRepository _productRepository;
-        public ProductService(IProductRepository productRepository)
+        private ICategoryRepository _categoryRepository;
+        private IColourRepository _colourRepository;
+        private ISizeRepository _sizeRepository;
+        public ProductService(IProductRepository productRepository,
+            ICategoryRepository categoryRepository,
+            IColourRepository colourRepository,
+            ISizeRepository sizeRepository)
         {
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+            _colourRepository = colourRepository;
+            _sizeRepository = sizeRepository;
         }
 
        
@@ -208,22 +218,46 @@ namespace ECommerce.Business.Concrete.Managers
             return response;
         }
 
-        public async Task AddAsync(Product product)
+        public async Task AddAsync(ProductRequestModel model)
         {
-            var existing = await _productRepository.GetByNameAsync(product.Barcode);
-            if(existing != null)
-                throw new Exception("Bu barkod da bir ürün zaten mevcut.");
+            var existing = await _productRepository.GetByNameAsync(model.Barcode);
+            if (existing != null)
+                throw new Exception("Bu barkodda bir ürün zaten mevcut.");
 
-            await _productRepository.AddAsync(existing);
+           
+
+            // 4. Ürünü oluştur
+            var newProduct = new ECommerce.DataAccess.Models.Product
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Quantity = model.Quantity,
+                Price = model.Price,
+                Barcode = model.Barcode,
+                Brand = model.Brand,
+                IsDelete = false
+            };
+
+            await _productRepository.AddAsync(newProduct);
+
+
         }
 
-        public async Task UpdateAsync(Product product)
+        public async Task UpdateAsync(ProductRequestModel model, int id)
         {
-            var existing = await _productRepository.GetByIdAsync(product.Id);
-            if (existing != null)
+            var existing = await _productRepository.GetByIdAsync(id);
+            if (existing == null)
                 throw new Exception("Güncellenecek ürün bulunamadı");
 
-            existing.Name = product.Name;
+
+            // Güncelleme işlemi
+            existing.Name = model.Name;
+            existing.Description = model.Description;
+            existing.Price = model.Price;
+            existing.Quantity = model.Quantity;
+            existing.Barcode = model.Barcode; // barcode değişmesini istiyorsan bunu da güncelleyebilirsin
+            existing.Brand = model.Brand;
+            
 
             await _productRepository.UpdateAsync(existing);
         }

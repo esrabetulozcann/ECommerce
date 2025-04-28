@@ -4,6 +4,7 @@ using ECommerce.Core.Models.Response.Colours;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
 using ECommerce.DataAccess.Models;
+using ECommerce.Core.Models.Request.Country;
 
 namespace ECommerce.Controllers
 {
@@ -42,12 +43,17 @@ namespace ECommerce.Controllers
 
 
         [HttpPost] // Yeni renk ekleme
-        public async Task<ActionResult<ColourResponseModel>> AddAsync([FromBody] Colour colour)
+        public async Task<ActionResult<ColourResponseModel>> AddAsync([FromBody] CountryAndColourRequestModel colourRequestModel)
         {
             try
             {
+                Colour colour = new Colour
+                {
+                    Name = colourRequestModel.Name,
+                };
+
                 await _colourService.AddAsync(colour);
-                return Ok("Beden başarıyla eklendi");
+                return Ok("Yeni renk eklendi.");
 
 
             }

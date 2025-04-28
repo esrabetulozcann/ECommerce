@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.DTO;
+using ECommerce.Core.Models.Request.ProductImage;
 using ECommerce.Core.Models.Response.Product;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Concrete;
@@ -15,10 +16,12 @@ namespace ECommerce.Business.Concrete.Managers
     public class ProductImageService : IProductImageService
     {
         private IProductImagesRepository _productImagesRepository;
+        private IProductRepository _productRepository;
 
-        public ProductImageService(IProductImagesRepository productImagesRepository)
+        public ProductImageService(IProductImagesRepository productImagesRepository, IProductRepository productRepository)
         {
             _productImagesRepository = productImagesRepository;
+            _productRepository = productRepository;
         }
 
 
@@ -65,26 +68,43 @@ namespace ECommerce.Business.Concrete.Managers
         }
 
 
-        public async Task AddAsync(ProductImage productImage)
+        public async Task AddAsync(ProductImageRequestModel model)
         {
-            var exististing = await _productImagesRepository.GetImagesByProductIdAsync(productImage.Id);
-            if (exististing != null)
-                throw new Exception("Bu id de bir ürün resmi mevcut");
+            var productName = await _productRepository.GetByNameAsync(model.ProductName);
+            if (productName == null)
+                throw new Exception("Ürün bulunamadı");
 
-            await _productImagesRepository.AddAsync(exististing);
+            var productImage = await _productImagesRepository.GetByImageUrlAsync(model.ImageUrl);
+            if (productImage != null)
+                throw new Exception("Ürün görsel daha önce eklenmiş.");
+
+
+            var newImage = new ProductImage
+            {
+                ProductId = productName.Id,
+                ImageUrl = model.ImageUrl
+            };
+
+            await _productImagesRepository.AddAsync(newImage);
             
         }
 
        
-        public async Task UpdateAsync(ProductImage productImage)
+        public async Task UpdateAsync(ProductImageRequestModel model)
         {
-            var existing = await _productImagesRepository.GetImagesByProductIdAsync(productImage.Id);
-            if (existing != null)
-                throw new Exception("Güncellenecek ürün resmi bulunamadı");
+            var product = await _productRepository.GetByNameAsync(model.ProductName);
+            if (product == null)
+                throw new Exception("Ürün bulunamadı");
 
-            existing.ImageUrl = productImage.ImageUrl;
+            // Ürüne ait eski görseli getirdim
+            var productImage = await _productImagesRepository.GetImagesByProductIdAsync(product.Id);
+            if (productImage == null)
+                throw new Exception("Güncellenecek ürün görseli bulunamadı");
 
-            await _productImagesRepository.UpdateAsync(existing);
+            // Yeni ürünü atadım
+           productImage.ImageUrl = model.ImageUrl;
+
+            await _productImagesRepository.UpdateAsync(productImage);
         }
 
         public async Task DeleteAsync(int id)

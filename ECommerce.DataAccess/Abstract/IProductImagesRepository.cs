@@ -12,6 +12,7 @@ namespace ECommerce.DataAccess.Abstract
     {
         Task<ProductImage> GetImagesByProductIdAsync(int productId);
         Task<List<ProductImage>> GetAllImagesAsync();
+        Task<ProductImage> GetByImageUrlAsync(string imageUrl);
 
         Task AddAsync(ProductImage productImage);
         Task UpdateAsync(ProductImage productImage);

@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Core.Models.Request.ProductImage;
 using ECommerce.Core.Models.Response.Product;
 using ECommerce.DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -30,11 +31,11 @@ namespace ECommerce.Controllers
 
 
         [HttpPost] // Yeni ürün görseli eklendi.
-        public async Task<ActionResult<ProductImagesResponseModel>> AddAsync([FromBody] ProductImage productImage)
+        public async Task<ActionResult<ProductImagesResponseModel>> AddAsync([FromBody] ProductImageRequestModel requestModel)
         {
             try
             {
-                await _productImageService.AddAsync(productImage);
+                await _productImageService.AddAsync(requestModel);
                 return Ok("Ürün görseli başarıyla eklendi.");
 
             }
@@ -47,11 +48,11 @@ namespace ECommerce.Controllers
 
 
         [HttpPut] // Ürün gösrelinin güncellenmesi
-        public async Task<ActionResult<ProductImagesResponseModel>> UpdateAsync([FromBody] ProductImage productImage)
+        public async Task<ActionResult<ProductImagesResponseModel>> UpdateAsync([FromBody] ProductImageRequestModel productImageRequest)
         {
             try
             {
-                await _productImageService.UpdateAsync(productImage);
+                await _productImageService.UpdateAsync(productImageRequest);
                 return Ok("Ürün görseli başarıyla güncellendi");
             }
             catch (Exception ex)

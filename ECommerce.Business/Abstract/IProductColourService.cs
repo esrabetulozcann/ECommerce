@@ -1,4 +1,5 @@
-﻿using ECommerce.Core.Models.Response.Colours;
+﻿using ECommerce.Core.Models.Request.ProductColour;
+using ECommerce.Core.Models.Response.Colours;
 using ECommerce.Core.Models.Response.Product;
 using ECommerce.DataAccess.Models;
 using System;
@@ -13,9 +14,8 @@ namespace ECommerce.Business.Abstract
     {
         Task<List<ProductColourResponseModel>> GetAllAsync();
         Task<ProductColourResponseModel> GetByIdAsync(int id);
-
-        Task AddAsync(ProductColour productColour);
-        Task UpdateAsync(ProductColour productColour);
+        Task AddAsync(ProductColourRequestModel model);
+        Task UpdateAsync(ProductColourRequestModel model);
         Task DeleteAsync(int id);
         
     }

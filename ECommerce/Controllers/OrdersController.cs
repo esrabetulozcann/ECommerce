@@ -40,24 +40,18 @@ namespace ECommerce.Controllers
 
 
 
-        [HttpPost] // Yeni order ekleme
-        public async Task<ActionResult<OrderRequestModel>> AddAsync([FromBody] OrderRequestModel ordersResponseModel)
+        /*[HttpPost] // Yeni order ekleme
+        public async Task<ActionResult<OrderAddRequestModel>> AddAsync([FromBody] OrderAddRequestModel ordersResponseModel)
         {
             try
             {
                 Order order = new Order
                 {
                     UserId = ordersResponseModel.UserId,
-                    OrderDate = ordersResponseModel.OrderDate,
-                    TotalPrice = ordersResponseModel.TotalPrice,
+                    OrderDate = DateTime.UtcNow,
                     AddressId = ordersResponseModel.AddressId,
-                    Status = ordersResponseModel.Status,
-                    User = new User
-                    {
-                        Id = ordersResponseModel.User.Id,
-                        FirstName = ordersResponseModel.User.FirstName,
-                        LastName = ordersResponseModel.User.LastName,
-                    }
+                    Status = true,
+                    
                 };
 
                 await _ordersService.AddAsync(order);
@@ -68,6 +62,22 @@ namespace ECommerce.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        */
+
+        [HttpPost]
+        public async Task<ActionResult> AddAsync([FromBody] OrderAddRequestModel orderAddRequestModel)
+        {
+            try
+            {
+                await _ordersService.AddAsync(orderAddRequestModel);
+                return Ok("Sipariş başarıyla eklendi");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

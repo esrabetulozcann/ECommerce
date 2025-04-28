@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Business.Concrete.Managers;
+using ECommerce.Core.Models.Request.Product;
 using ECommerce.Core.Models.Response.Product;
 using ECommerce.DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -46,11 +47,11 @@ namespace ECommerce.Controllers
 
 
         [HttpPost] // Yeni ürün ekleme alanı
-        public async Task<ActionResult<ProductResponseModel>> AddAsync([FromBody] Product product)
+        public async Task<ActionResult<ProductResponseModel>> AddAsync([FromBody] ProductRequestModel model)
         {
             try
             {
-                await _productService.AddAsync(product);
+                await _productService.AddAsync(model);
                 return Ok("Beden başarıyla eklendi");
 
 
@@ -62,13 +63,13 @@ namespace ECommerce.Controllers
         }
 
 
-        [HttpPut] // Yeni beden güncelleme alanı
+        [HttpPut("{id}")] // Yeni beden güncelleme alanı
 
-        public async Task<ActionResult<ProductResponseModel>> UpdateAsync([FromBody] Product product)
+        public async Task<ActionResult<ProductResponseModel>> UpdateAsync(int id, [FromBody] ProductRequestModel model)
         {
             try
             {
-                await _productService.UpdateAsync(product);
+                await _productService.UpdateAsync(model, id);
                 return Ok("Beden başarıyla güncellendi");
             }
             catch (Exception ex)

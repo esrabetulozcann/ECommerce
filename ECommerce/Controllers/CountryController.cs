@@ -48,7 +48,7 @@ namespace ECommerce.Controllers
 
 
         [HttpPost] // Yeni ülke eklemek
-        public async Task<ActionResult<CountryResponseModel>> AddAsync([FromBody] CountryAddRequestModel countryRequest)
+        public async Task<ActionResult<CountryResponseModel>> AddAsync([FromBody] CountryAndColourRequestModel countryRequest)
         {
             try
             {

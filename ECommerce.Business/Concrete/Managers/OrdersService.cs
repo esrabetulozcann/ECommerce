@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.DTO;
+using ECommerce.Core.Models.Request.Order;
 using ECommerce.Core.Models.Request.User;
 using ECommerce.Core.Models.Response.Orders;
 using ECommerce.Core.Models.Response.Users;
@@ -17,10 +18,14 @@ namespace ECommerce.Business.Concrete.Managers
     public class OrdersService : IOrdersService
     {
         private IOrdersRepository _orderRepository;
+        private IOrderItemRepository _orderItemRepository;
+        private IProductRepository _productRepository;
 
-        public OrdersService(IOrdersRepository orderRepository)
+        public OrdersService(IOrdersRepository orderRepository, IOrderItemRepository orderItemRepository, IProductRepository productRepository)
         {
             _orderRepository = orderRepository;
+            _orderItemRepository = orderItemRepository;
+            _productRepository = productRepository;
         }
 
 
@@ -107,13 +112,46 @@ namespace ECommerce.Business.Concrete.Managers
             return filteredOrders;
         }
 
-        public async Task AddAsync(Order order)
+        
+        public async Task AddAsync(OrderAddRequestModel order)
         {
-            var existing = await _orderRepository.GetOrderByIdAsync(order.Id);
-            if (existing != null)
-                throw new Exception("Bu id de bir sipariş mevcut.");
+            var newOrder = new Order
+            {
+                UserId = order.UserId,
+                AddressId = order.AddressId,
+                OrderDate = DateTime.Now, // Şu anki tarih
+                Status = false, // Yeni eklenen sipariş için başlangıç durumu
+            };
+            var orderId = await _orderRepository.AddAsync(newOrder);
+            decimal totalPrice = 0;
 
-            await _orderRepository.AddAsync(order);
+            foreach (var item in order.OrderItems)
+            {
+                // Burada ürünün fiyatını veri tabanından çekiyoruz
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
+
+                if (product == null)
+                    throw new Exception($"Product with ID {item.ProductId} not found!");
+
+                var price = product.Price;
+
+                totalPrice += price * item.Quantity;
+
+                await _orderItemRepository.AddAsync(new OrderItem
+                {
+                    OrderId = orderId,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    Price = product.Price,
+                });
+
+                // Siparişin toplam fiyatını güncelliyoruz
+                newOrder.TotalPrice = totalPrice;
+                await _orderRepository.UpdateAsync(newOrder);
+            }
         }
+
+
+
     }
 }
