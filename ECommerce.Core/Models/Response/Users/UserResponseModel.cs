@@ -14,9 +14,10 @@ namespace ECommerce.Core.Models.Response.Users
         public String Password { get; set; }
         public String Email { get; set; }
         public String Gender { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int PhoneNumber1 { get; set; }
-        public int PhoneNumber2 { get; set; }
+        public string PhoneNumber1 { get; set; }
+        public string PhoneNumber2 { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

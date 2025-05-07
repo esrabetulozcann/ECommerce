@@ -39,8 +39,6 @@ public partial class EcommerceContext : DbContext
 
     public virtual DbSet<OrderItem> OrderItems { get; set; }
 
-    public virtual DbSet<ParentCategory> ParentCategories { get; set; }
-
     public virtual DbSet<Payment> Payments { get; set; }
 
     public virtual DbSet<PaymetnType> PaymetnTypes { get; set; }
@@ -133,12 +131,9 @@ public partial class EcommerceContext : DbContext
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.ToTable("Category");
 
-            entity.HasOne(d => d.ParentCategory).WithMany(p => p.Categories)
-                .HasForeignKey(d => d.ParentCategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Categories_ParentCategory");
+            entity.Property(e => e.Name).HasMaxLength(30);
         });
 
         modelBuilder.Entity<City>(entity =>
@@ -255,13 +250,6 @@ public partial class EcommerceContext : DbContext
                 .HasConstraintName("FK_OrderItems_Product");
         });
 
-        modelBuilder.Entity<ParentCategory>(entity =>
-        {
-            entity.ToTable("ParentCategory");
-
-            entity.Property(e => e.Name).HasMaxLength(50);
-        });
-
         modelBuilder.Entity<Payment>(entity =>
         {
             entity.Property(e => e.ApproveCode)
@@ -311,7 +299,7 @@ public partial class EcommerceContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Product_Categories1");
+                .HasConstraintName("FK_Product_Category");
         });
 
         modelBuilder.Entity<ProductColour>(entity =>

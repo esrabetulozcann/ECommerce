@@ -1,74 +1,135 @@
 ﻿using ECommerce.Business.Abstract;
-using ECommerce.Core.Models.Response.Categories;
+using ECommerce.Core.Models.DTO;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ECommerce.Business.Concrete.Managers
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ICategoryRepository _categoryRepositor;
-        public CategoryService(ICategoryRepository categoryRepositor)
+        private readonly ICategoryRepository _categoryRepository;
+
+        public CategoryService(ICategoryRepository categoryRepository)
         {
-            _categoryRepositor = categoryRepositor;
+            _categoryRepository = categoryRepository;
         }
 
-        public async Task<List<CategoryResponseModel>> GetAllAsync()
+        public async Task<List<CategoryTreeDTO>> GetAllCategoriesAsync()
         {
-            var result = await _categoryRepositor.GetAllAsync();
+            var categories = await _categoryRepository.GetAllCategoriesAsync();
 
-            List<CategoryResponseModel> responseModels = new List<CategoryResponseModel>();
+            var categoryDict = categories.ToDictionary(c => c.Id);
 
-            responseModels = result.Select(c => new CategoryResponseModel
-            {
-                Id = c.Id,
-                Name = c.Name,
-                
-            }).ToList();
+            // Root kategorileri bulacağız. ParentCategoryId null olanları
+            var rootCategories = categories
+                .Where(c => c.ParentCategoryId == null)
+                .Select(c => BuildTree(c, categories))
+                .ToList();
 
-            return responseModels;
+            return rootCategories;
         }
 
-        public async Task<CategoryResponseModel> GetByIdAsync(int id)
+        public async Task<CategoryTreeDTO?> GetCategoryTreeByNameAsync(string name)
         {
-            var result = await _categoryRepositor.GetByIdAsync(id);
+            var all = await _categoryRepository.GetAllCategoriesAsync();
+            var match = all.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return match == null ? null : BuildTree(match, all);
+        }
 
-            if (result == null)
+        public async Task<List<CategoryTreeDTO>> SearchCategoryTreesAsync(string keyword)
+        {
+            var categories = await _categoryRepository.GetAllCategoriesAsync();
+
+            var matched = categories
+                .Where(c => c.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                .Select(c => BuildTree(c, categories))
+                .ToList();
+
+            return matched;
+        }
+
+        public async Task<List<CategoryTreeDTO>> SearchCategoryTreeWithAncestorsAsync(string keyword)
+        {
+            var allCategories = await _categoryRepository.GetAllCategoriesAsync();
+
+            var matchedCategories = allCategories
+                .Where(c => c.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var rootCandidates = new HashSet<int>();
+
+            foreach (var match in matchedCategories)
             {
-                return new CategoryResponseModel();
-            }
-            else
-            {
-                CategoryResponseModel responseModel = new CategoryResponseModel
+                var current = match;
+                while(current.ParentCategoryId != null)
                 {
-                    Id = result.Id,
-                    Name = result.Name,
-                    
-                };
-
-                return responseModel;
+                    current = allCategories.FirstOrDefault(c => c.Id == current.ParentCategoryId);
+                    if (current == null) break;
+                }
+                if(current != null) 
+                    rootCandidates.Add(current.Id);
             }
+
+            var resultTrees = allCategories
+                .Where(c => rootCandidates.Contains(c.Id))
+                .Select(c => BuildTreeWithFilter(c, allCategories, keyword))
+                .Where(c => c != null)
+                .ToList()!;
+
+            return resultTrees;
         }
 
-        public async Task<CategoryResponseModel> GetByNameAsync(string name)
+        private CategoryTreeDTO BuildTree(Category category, List<Category> allCategories)
         {
-            var result = await _categoryRepositor.GetByNameAsync(name);
+            var childrenByParent = allCategories
+                .Where(c => c.ParentCategoryId == category.Id)
+                .ToList();
 
-            if (result == null)
+            var childrenByCategory = allCategories
+                .Where(c => c.CategoryId == category.Id && c.ParentCategoryId != category.Id) // Tekrardan kaçın
+                .ToList();
+
+            var allChildren = childrenByParent
+                .Concat(childrenByCategory)
+                .DistinctBy(c => c.Id) // Aynı çocuk iki kaynaktan gelmişse sadece birini al
+                .ToList();
+
+            return new CategoryTreeDTO
             {
-                return new CategoryResponseModel();
-            }
-            else
+                Id = category.Id,
+                Name = category.Name,
+                Children = allChildren
+                    .Select(c => BuildTree(c, allCategories))
+                    .ToList()
+            };
+        }
+
+        private CategoryTreeDTO? BuildTreeWithFilter(Category category, List<Category> allCategories, string keyword)
+        {
+            var children = allCategories
+                .Where(c => c.ParentCategoryId == category.Id)
+                .Select(c => BuildTreeWithFilter(c, allCategories, keyword))
+                .Where(c => c != null)
+                .ToList()!;
+
+            bool isMatch = category.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase);
+
+            if (isMatch || children.Any())
             {
-                CategoryResponseModel responseModel = new CategoryResponseModel
+                return new CategoryTreeDTO
                 {
-                    Id = result.Id,
-                    Name = result.Name,
-                    
+                    Id = category.Id,
+                    Name = category.Name,
+                    Children = children
                 };
-
-                return responseModel;
             }
+
+            return null;
         }
     }
 }

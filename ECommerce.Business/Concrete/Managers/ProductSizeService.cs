@@ -18,9 +18,16 @@ namespace ECommerce.Business.Concrete.Managers
             _productSizeRepository = productSizeRepository;
         }
 
-        public async Task AddAsync(ProductSize productSize)
+        public async Task AddAsync(int ProductId, int SizeId)
         {
+            var productSize = new ProductSize
+            {
+                ProductId = ProductId,
+                SizeId = SizeId
+            };
+
             await _productSizeRepository.AddAsync(productSize);
+
         }
 
         public async Task<bool> ExistsAsync(int productId, int sizeId)
@@ -38,9 +45,6 @@ namespace ECommerce.Business.Concrete.Managers
             return await _productSizeRepository.GetSizesByProductIdAsync(productId);
         }
 
-        public async Task RemoveAsync(ProductSize productSize)
-        {
-            await _productSizeRepository.RemoveAsync(productSize);
-        }
+      
     }
 }

@@ -19,16 +19,13 @@ namespace ECommerce.Business.Concrete.Managers
     public class ProductService : IProductService
     {
         private IProductRepository _productRepository;
-        private ICategoryRepository _categoryRepository;
         private IColourRepository _colourRepository;
         private ISizeRepository _sizeRepository;
         public ProductService(IProductRepository productRepository,
-            ICategoryRepository categoryRepository,
             IColourRepository colourRepository,
             ISizeRepository sizeRepository)
         {
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
             _colourRepository = colourRepository;
             _sizeRepository = sizeRepository;
         }

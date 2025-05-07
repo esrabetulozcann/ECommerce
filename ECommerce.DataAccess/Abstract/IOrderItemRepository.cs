@@ -12,7 +12,7 @@ namespace ECommerce.DataAccess.Abstract
     {
         Task<List<OrderItem>> GetAllAsync();
         Task<OrderItem> GetByIdAsync(int id);
-        Task<OrderItem> GetByOrderIdAsync(int id);
+        Task<List<OrderItem>> GetByOrderIdAsync(int id);
         Task AddAsync(OrderItem orderItem);
 
     }

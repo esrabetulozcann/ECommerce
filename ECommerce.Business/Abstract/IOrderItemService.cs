@@ -12,6 +12,6 @@ namespace ECommerce.Business.Abstract
     {
         Task<List<AllOrderItemRequestModel>> GetAllAsync();
         Task<AllOrderItemRequestModel> GetByIdAsync(int id);
-        Task<OrderItemRequestModel> GetByOrderIdAsync(int id);
+        Task<List<OrderItemRequestModel>> GetByOrderIdAsync(int id);
     }
 }

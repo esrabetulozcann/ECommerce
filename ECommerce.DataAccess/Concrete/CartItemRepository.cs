@@ -40,5 +40,12 @@ namespace ECommerce.DataAccess.Concrete
             await _context.CartItems.AddAsync(cartItem);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(CartItem cartItem)
+        {
+            _context.CartItems.Update(cartItem);
+            await _context.SaveChangesAsync();
+
+        }
     }
 }

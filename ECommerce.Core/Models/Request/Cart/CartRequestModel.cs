@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECommerce.Core.Models.Request.CartItem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace ECommerce.Core.Models.Request.Cart
         public int UserId { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsDelete { get; set; }
+        public List<CartItemGetAllRequestModel> CartItems { get; set; }
     }
 }

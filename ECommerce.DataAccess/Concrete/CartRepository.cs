@@ -21,7 +21,10 @@ namespace ECommerce.DataAccess.Concrete
 
         public async Task<List<Cart>> GetAllAsync()
         {
-            return await _context.Carts.Include(c => c.User).ToListAsync();
+            return await _context.Carts
+                .Include(c => c.User)
+                .Include(c => c.CartItems)
+                .ToListAsync();
         }
 
         public async Task<Cart> GetByIdAsync(int id)

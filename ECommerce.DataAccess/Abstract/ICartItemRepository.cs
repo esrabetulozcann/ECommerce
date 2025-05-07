@@ -13,5 +13,6 @@ namespace ECommerce.DataAccess.Abstract
         Task<CartItem> GetByIdAsync(int id);
         Task<CartItem> GetByCartIdAsync(int cartId);
         Task Add(CartItem cartItem);
+        Task UpdateAsync(CartItem cartItem);
     }
 }

@@ -1,5 +1,4 @@
-﻿using ECommerce.Core.Models.Response.Categories;
-using ECommerce.DataAccess.Models;
+﻿using ECommerce.Core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +9,9 @@ namespace ECommerce.Business.Abstract
 {
     public interface ICategoryService
     {
-        Task<List<CategoryResponseModel>> GetAllAsync();
-        Task<CategoryResponseModel> GetByIdAsync(int id);
-        Task<CategoryResponseModel> GetByNameAsync(string name);
+        Task<List<CategoryTreeDTO>> GetAllCategoriesAsync();
+        Task<CategoryTreeDTO?> GetCategoryTreeByNameAsync(string name);
+        Task<List<CategoryTreeDTO>> SearchCategoryTreesAsync(string keyword);
+        Task<List<CategoryTreeDTO>> SearchCategoryTreeWithAncestorsAsync(string keyword);
     }
 }

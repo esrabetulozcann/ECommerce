@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Request.Cart;
+using ECommerce.Core.Models.Request.CartItem;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Models;
 using System;
@@ -13,9 +14,13 @@ namespace ECommerce.Business.Concrete.Managers
     public class CartService : ICartService
     {
         private readonly ICartRepository _cartRepository;
-        public CartService(ICartRepository cartRepository)
+        private readonly ICartItemRepository _itemRepository;
+        private readonly IProductRepository _productRepository;
+        public CartService(ICartRepository cartRepository, ICartItemRepository cartItemRepository, IProductRepository productRepository)
         {
             _cartRepository = cartRepository;
+            _itemRepository = cartItemRepository;
+            _productRepository = productRepository;
         }
 
         
@@ -29,6 +34,13 @@ namespace ECommerce.Business.Concrete.Managers
                 CreatedAt = x.CreatedAt,
                 IsDelete = x.IsDelete,
                 UserId = x.UserId,
+                CartItems = x.CartItems.Select(ci => new CartItemGetAllRequestModel
+                {
+                    Id = ci.Id,
+                    ProductId = ci.ProductId,
+                    Quantity = ci.Quantity,
+                    Price = ci.Price * ci.Quantity,
+                }).ToList(),
             }).ToList();
             return cartRequestModels;
         }
@@ -70,16 +82,59 @@ namespace ECommerce.Business.Concrete.Managers
         }
 
 
-        public Task AddAsync(Cart cart)
+        public async Task AddAsync(CartAddRequestModel cart)
         {
-            throw new NotImplementedException();
+            var newCart = new Cart
+            {
+                UserId = cart.UserId,
+                CreatedAt = DateTime.UtcNow,
+                IsDelete = false,
+            };
+
+            await _cartRepository.AddAsync(newCart);
+            var cartId = newCart.Id;
+
+            foreach (var item in cart.CartItems)
+            {
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
+                if (product == null)
+                    throw new Exception("Ürün bulunamadı");
+
+                var cartItem = new CartItem
+                {
+                     CartId = cartId,
+                     ProductId = item.ProductId,
+                     Quantity = item.Quantity,
+                     Price = product.Price,
+                };
+
+                await _itemRepository.Add(cartItem);
+            }
+
         }
 
        
 
-        public Task UpdateAsync(Cart cart)
+        public async Task UpdateAsync(CartItemUpdateRequestModel model)
         {
-            throw new NotImplementedException();
+            var cartItem = await _itemRepository.GetByIdAsync(model.CartItemId);
+            if (cartItem == null)
+                throw new Exception("Sepet bulunamadı");
+
+            //Yeni ürün bilgilerini sistemden çekiyorum.
+            var product = await _productRepository.GetByIdAsync(model.ProductId);
+            if (product == null)
+                throw new Exception("Ürün bulunamadı");
+
+
+            //Güncellenecek alanlar:
+            cartItem.ProductId = model.ProductId;
+            cartItem.Quantity = model.Quantity;
+
+            //Fiyat sistemden geliyor
+            cartItem.Price = product.Price;
+             
+            await _itemRepository.UpdateAsync(cartItem);
         }
 
 

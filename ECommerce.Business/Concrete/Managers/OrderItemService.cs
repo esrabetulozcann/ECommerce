@@ -55,25 +55,20 @@ namespace ECommerce.Business.Concrete.Managers
             
         }
 
-        public async Task<OrderItemRequestModel> GetByOrderIdAsync(int id)
+        public async Task<List<OrderItemRequestModel>> GetByOrderIdAsync(int id)
         {
             var result = await _orderItemRepository.GetByOrderIdAsync(id);
-            if (result == null)
-            {
-                return new OrderItemRequestModel();
-            }
-            else
-            {
-                OrderItemRequestModel orderItemRequestModel = new OrderItemRequestModel
-                {
-                    OrderId = result.OrderId,
-                    Price = result.Price,
-                    ProductId = result.ProductId,
-                    Quantity = result.Quantity
-                };
+            List<OrderItemRequestModel> orderItemRequestModels = new List<OrderItemRequestModel>();
 
-                return orderItemRequestModel;
-            }
+            orderItemRequestModels = result.Select(oi => new OrderItemRequestModel
+            {
+                OrderId = oi.OrderId,
+                Price= oi.Price,
+                ProductId = oi.ProductId,
+                Quantity = oi.Quantity,
+            }).ToList();
+
+            return orderItemRequestModels;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ECommerce.Core.Models.Request.Cart;
+using ECommerce.Core.Models.Request.CartItem;
 using ECommerce.DataAccess.Models;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ namespace ECommerce.Business.Abstract
         Task<List<CartRequestModel>> GetAllAsync();
         Task<List<CartRequestModel>> GetByUserId(int userId);
         Task<CartRequestModel> GetByIdAsync(int id);
-        Task AddAsync(Cart cart);
-        Task UpdateAsync(Cart cart);
+        Task AddAsync(CartAddRequestModel cart);
+        Task UpdateAsync(CartItemUpdateRequestModel model);
         Task DeleteAsync(int id);
 
     }

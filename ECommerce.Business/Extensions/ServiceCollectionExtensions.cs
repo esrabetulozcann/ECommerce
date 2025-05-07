@@ -10,10 +10,8 @@ namespace ECommerce.Business.Extensions
     {
         public static IServiceCollection AddBusinessRegistration(this IServiceCollection services)
         {
-            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IColourService, ColourService>();
             services.AddScoped<IOrdersService, OrdersService>();
-            services.AddScoped<IParentCategoryService, ParentCategoryService>();
             services.AddScoped<IProductColourService, ProductColourService>();
             services.AddScoped<IProductImageService, ProductImageService>();
             services.AddScoped<IProductService, ProductService>();
@@ -29,6 +27,11 @@ namespace ECommerce.Business.Extensions
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IInvoiceService, InvoiceService>();
+            services.AddScoped<IInvoiceDetailService, InvoiceDetailService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             return services;
         }

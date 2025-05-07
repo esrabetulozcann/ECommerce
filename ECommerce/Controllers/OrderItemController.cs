@@ -31,7 +31,7 @@ namespace ECommerce.Controllers
 
 
         [HttpGet("{orderId}/orderItemByOrderId")]
-        public async Task<ActionResult<OrderItemRequestModel>> GetByOrderIdAsync(int orderId)
+        public async Task<ActionResult<List<OrderItemRequestModel>>> GetByOrderIdAsync(int orderId)
         {
             return await _orderItemService.GetByOrderIdAsync(orderId);
         }

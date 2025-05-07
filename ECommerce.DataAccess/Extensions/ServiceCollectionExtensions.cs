@@ -8,10 +8,8 @@ namespace ECommerce.DataAccess.Extensions
     {
         public static IServiceCollection AddDataAccessRegistration(this IServiceCollection services)
         {
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IColourRepository, ColourRepository>();
             services.AddScoped<IOrdersRepository, OrderRepository>();
-            services.AddScoped<IParentCategoryRepository, ParentCategoryRepository>();
             services.AddScoped<IProductColourRepository, ProductColourRepository>();
             services.AddScoped<IProductImagesRepository, ProductImagesRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -27,6 +25,11 @@ namespace ECommerce.DataAccess.Extensions
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            services.AddScoped<IInvoiceDetailRepository, InvoiceDetailRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             return services;
 

@@ -15,7 +15,7 @@ namespace ECommerce.DataAccess.Concrete
 
         public ProductSizeRepository(EcommerceContext context)
         {
-            _context = context;
+            _context = new();
         }
 
         public async Task<List<Product>> GetProductsBySizeIdAsync(int sizeId)
@@ -42,11 +42,6 @@ namespace ECommerce.DataAccess.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveAsync(ProductSize productSize)
-        {
-            _context.ProductSizes.Remove(productSize);
-            await _context.SaveChangesAsync();
-        }
 
 
         public async Task<bool> ExistsAsync(int productId, int sizeId)

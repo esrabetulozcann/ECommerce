@@ -34,9 +34,9 @@ namespace ECommerce.DataAccess.Concrete
             return await _context.OrderItems.Where(oi => oi.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<OrderItem> GetByOrderIdAsync(int id)
+        public async Task<List<OrderItem>> GetByOrderIdAsync(int id)
         {
-            return await _context.OrderItems.Where(oi => oi.OrderId == id).FirstOrDefaultAsync();
+            return await _context.OrderItems.Where(oi => oi.OrderId == id).Include(oi => oi.Product).ToListAsync();
         }
     }
 }

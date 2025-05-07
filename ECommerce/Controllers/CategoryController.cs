@@ -1,14 +1,12 @@
 ﻿using ECommerce.Business.Abstract;
-using ECommerce.Business.Concrete.Managers;
-using ECommerce.Core.Models.Response.Categories;
-using ECommerce.DataAccess.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
+using ECommerce.Core.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Controllers
 {
-    public class CategoryController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
         public CategoryController(ICategoryService categoryService)
@@ -17,27 +15,38 @@ namespace ECommerce.Controllers
         }
 
 
-        [HttpGet("getall")]
-        public async Task<ActionResult<IEnumerable<CategoryResponseModel>>> GetAll()
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<CategoryTreeDTO>>> GetAllCategoriesAsync()
         {
-            return await _categoryService.GetAllAsync();
+            return await _categoryService.GetAllCategoriesAsync();
+
         }
 
 
-        // Belirli bir parent'ın alt kategorilerini çekmek için bu şekilde yazdım.
-        [HttpGet("{id}/categories")]
-        public async Task<ActionResult<CategoryResponseModel>> GetCategoriesByParent(int id)
+        [HttpGet("exact/{name}")]
+        public async Task<IActionResult> GetByExactName(string name)
         {
-            var categories = await _categoryService.GetByIdAsync(id);
-            return categories;
+            var result = await _categoryService.GetCategoryTreeByNameAsync(name);
+            if (result == null)
+                return NotFound("Kategori bulunamadı.");
+            return Ok(result);
         }
 
-       
-        [HttpGet("categoriesbyname")]
-        public async Task<ActionResult<CategoryResponseModel>> GetByNameAsync([FromQuery]string name)
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchByName([FromQuery] string keyword)
         {
-            var categories = await _categoryService.GetByNameAsync(name);
-            return categories;
+            var result = await _categoryService.SearchCategoryTreesAsync(keyword);
+            return Ok(result);
         }
+
+
+        [HttpGet("search-tree")]
+        public async Task<IActionResult> SearchTreeWithAncestors([FromQuery] string keyword)
+        {
+            var result = await _categoryService.SearchCategoryTreeWithAncestorsAsync(keyword);
+            return Ok(result);
+        }
+
     }
 }
