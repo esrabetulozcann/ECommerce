@@ -87,45 +87,61 @@ namespace ECommerce.Business.Concrete.Managers
         private CategoryTreeDTO BuildTree(Category category, List<Category> allCategories)
         {
             var childrenByParent = allCategories
-                .Where(c => c.ParentCategoryId == category.Id)
-                .ToList();
+        .Where(c => c.ParentCategoryId == category.Id)
+        .ToList();
 
             var childrenByCategory = allCategories
-                .Where(c => c.CategoryId == category.Id && c.ParentCategoryId != category.Id) // Tekrardan kaçın
+                .Where(c => c.CategoryId == category.Id && c.ParentCategoryId != category.Id)
                 .ToList();
 
             var allChildren = childrenByParent
                 .Concat(childrenByCategory)
-                .DistinctBy(c => c.Id) // Aynı çocuk iki kaynaktan gelmişse sadece birini al
+                .DistinctBy(c => c.Id)
                 .ToList();
+
+            var childTrees = allChildren.Select(c => BuildTree(c, allCategories)).ToList();
 
             return new CategoryTreeDTO
             {
                 Id = category.Id,
                 Name = category.Name,
-                Children = allChildren
-                    .Select(c => BuildTree(c, allCategories))
-                    .ToList()
+                Children = childTrees.Any() ? childTrees : null
             };
         }
 
         private CategoryTreeDTO? BuildTreeWithFilter(Category category, List<Category> allCategories, string keyword)
         {
-            var children = allCategories
+            // Hem ParentCategoryId hem CategoryId ile eşleşen çocukları topla
+            var childrenByParent = allCategories
                 .Where(c => c.ParentCategoryId == category.Id)
+                .ToList();
+
+            var childrenByCategory = allCategories
+                .Where(c => c.CategoryId == category.Id && c.ParentCategoryId != category.Id)
+                .ToList();
+
+            var allChildren = childrenByParent
+                .Concat(childrenByCategory)
+                .DistinctBy(c => c.Id)
+                .ToList();
+
+            // Çocuklar için recursive filtreleme
+            var filteredChildren = allChildren
                 .Select(c => BuildTreeWithFilter(c, allCategories, keyword))
                 .Where(c => c != null)
                 .ToList()!;
 
+            // Kendisi eşleşiyor mu?
             bool isMatch = category.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase);
 
-            if (isMatch || children.Any())
+            // Kendisi veya çocuklarından biri eşleşiyorsa bu node'u dahil et
+            if (isMatch || filteredChildren.Any())
             {
                 return new CategoryTreeDTO
                 {
                     Id = category.Id,
                     Name = category.Name,
-                    Children = children
+                    Children = filteredChildren.Any() ? filteredChildren : null
                 };
             }
 
