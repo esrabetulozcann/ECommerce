@@ -32,6 +32,7 @@ namespace ECommerce.Business.Extensions
             services.AddScoped<IInvoiceService, InvoiceService>();
             services.AddScoped<IInvoiceDetailService, InvoiceDetailService>();
             services.AddScoped<ICategoryService, CategoryService>();
+         
 
             return services;
         }
