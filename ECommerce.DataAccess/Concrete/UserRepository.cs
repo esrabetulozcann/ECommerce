@@ -67,6 +67,11 @@ namespace ECommerce.DataAccess.Concrete
 
         }
 
-        
+        public async Task<User> FindByEmailWithPasswordAsync(string email)
+        {
+            return await _context.Users
+                .Where(u => u.Email == email && !u.IsDelete)
+                .FirstOrDefaultAsync();
+        }
     }
 }

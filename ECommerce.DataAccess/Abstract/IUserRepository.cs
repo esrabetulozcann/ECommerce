@@ -13,6 +13,7 @@ namespace ECommerce.DataAccess.Abstract
         Task<User> FindByIdAsync(int id);
         Task<User> FindByNameAsync(string name);
         Task<User> FindByEmailAsync(string email);
+        Task<User> FindByEmailWithPasswordAsync(string email);
         Task AddAsync(User user);
         Task UpdateAsync(User user);
         Task DeleteAsync(int id);

@@ -18,7 +18,7 @@ namespace ECommerce.Controllers
             _productService = productService;
         }
 
-        [HttpGet("GetAllProduct")]
+        [HttpGet("GetAllProduct")] // authenticate eklenmeyecek
         public async Task<ActionResult<List<ProductResponseModel>>> GetAllAsync()
         {
             return await _productService.GetAllAsync();
@@ -46,7 +46,7 @@ namespace ECommerce.Controllers
         }
 
 
-        [HttpPost] // Yeni ürün ekleme alanı
+        [HttpPost] // Yeni ürün ekleme alanı, authenticate eklenecek
         public async Task<ActionResult<ProductResponseModel>> AddAsync([FromBody] ProductRequestModel model)
         {
             try
@@ -63,7 +63,7 @@ namespace ECommerce.Controllers
         }
 
 
-        [HttpPut("{id}")] // Yeni beden güncelleme alanı
+        [HttpPut("{id}")] // Yeni beden güncelleme alanı, authenticate ekle
 
         public async Task<ActionResult<ProductResponseModel>> UpdateAsync(int id, [FromBody] ProductRequestModel model)
         {
@@ -80,7 +80,7 @@ namespace ECommerce.Controllers
 
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] // authenticate ekle
         public async Task<ActionResult<ProductResponseModel>> DeleteAsync(int id)
         {
             try

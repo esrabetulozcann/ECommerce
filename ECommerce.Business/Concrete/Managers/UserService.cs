@@ -172,5 +172,14 @@ namespace ECommerce.Business.Concrete.Managers
 
             await _userRepository.DeleteAsync(id);
         }
+
+        public async Task<User> FindByEmailWithPasswordAsync(string email)
+        {
+            var existing = await _userRepository.FindByEmailWithPasswordAsync(email);
+            if (existing == null)
+                throw new Exception("Kullanıcı yok.");
+
+            return existing;
+        }
     }
 }
