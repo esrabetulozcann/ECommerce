@@ -6,6 +6,7 @@ using ECommerce.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ namespace ECommerce.Business.Concrete.Managers
             var result = await _userRepository.FindByEmailAsync(email);
             if(result == null)
             {
-                return new UserResponseModel();
+                return null;
             }
             else
             {
@@ -46,6 +47,7 @@ namespace ECommerce.Business.Concrete.Managers
                 return userResponseModel;
             }
         }
+
 
         public async Task<UserResponseModel> FindByIdAsync(int id)
         {
@@ -123,13 +125,12 @@ namespace ECommerce.Business.Concrete.Managers
             return userResponseModels;
         }
 
-
-        public async Task AddAsync(UserAddRequestModel userAddRequestModel)
+      
+        public async Task AddAsync(User userAddRequestModel)
         {
             var existing = await _userRepository.FindByEmailAsync(userAddRequestModel.Email);
             if (existing != null)
                 throw new Exception("Bu kullanıcı sistemde mevcut.");
-
 
             var newUser = new User
             {
@@ -142,7 +143,7 @@ namespace ECommerce.Business.Concrete.Managers
                 PhoneNumber1 = userAddRequestModel.PhoneNumber1,
                 PhoneNumber2 = userAddRequestModel.PhoneNumber2,
                 CreatedDate = DateTime.UtcNow,
-                IsDelete = false,
+                IsDelete = false
             };
             await _userRepository.AddAsync(newUser);
         }
@@ -181,5 +182,6 @@ namespace ECommerce.Business.Concrete.Managers
 
             return existing;
         }
+
     }
 }

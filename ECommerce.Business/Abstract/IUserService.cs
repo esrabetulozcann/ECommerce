@@ -16,7 +16,7 @@ namespace ECommerce.Business.Abstract
         Task<UserResponseModel> FindByNameAsync(string name);
         Task<UserResponseModel> FindByEmailAsync(string email);
         Task<User> FindByEmailWithPasswordAsync(string email);
-        Task AddAsync(UserAddRequestModel userAddRequestModel);
+        Task AddAsync(User userAddRequestModel);
         Task UpdateAsync(UserAddRequestModel model, int id);
         Task DeleteAsync(int id);
     }

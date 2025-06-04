@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Business.Concrete.Managers;
+using ECommerce.Core.Models.Request.User;
 using ECommerce.Core.Models.Request.User_Login;
 using ECommerce.Core.Models.Response.User_Login;
 using Microsoft.AspNetCore.Authorization;
@@ -26,6 +27,16 @@ namespace ECommerce.Controllers
             var result = await _authService.LoginUserAsync(request);
 
             return result;
+        }
+
+
+        [HttpPost("Register")]
+        [AllowAnonymous]
+        public async Task<ActionResult> RegisterAsync([FromBody] UserAddRequestModel request)
+        {
+             await _authService.RegisterAsync(request);
+
+            return Ok();
         }
 
     }

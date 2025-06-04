@@ -1,10 +1,12 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Request.Cart;
 using ECommerce.Core.Models.Request.CartItem;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CartController : ControllerBase
@@ -16,7 +18,7 @@ namespace ECommerce.Controllers
         }
 
 
-
+        [AllowAnonymous]
         [HttpGet("GetAllCart")]
         public async Task<ActionResult<List<CartRequestModel>>> GetAllAsync()
         {

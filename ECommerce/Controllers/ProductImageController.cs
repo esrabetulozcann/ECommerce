@@ -2,6 +2,7 @@
 using ECommerce.Core.Models.Request.ProductImage;
 using ECommerce.Core.Models.Response.Product;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
@@ -16,12 +17,14 @@ namespace ECommerce.Controllers
             _productImageService = productImageService;
         }
 
+        [AllowAnonymous]
         [HttpGet("GetAllProductImage")]
         public async Task<ActionResult<List<ProductImagesResponseModel>>> GetAllImageAsync()
         {
             return await _productImageService.GetAllImagesAsync();
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}/productImageId")]
         public async Task<ActionResult<ProductImagesResponseModel>> GetByIdAsync(int id)
         {
@@ -29,7 +32,7 @@ namespace ECommerce.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPost] // Yeni ürün görseli eklendi.
         public async Task<ActionResult<ProductImagesResponseModel>> AddAsync([FromBody] ProductImageRequestModel requestModel)
         {
@@ -47,6 +50,7 @@ namespace ECommerce.Controllers
         }
 
 
+        [Authorize]
         [HttpPut] // Ürün gösrelinin güncellenmesi
         public async Task<ActionResult<ProductImagesResponseModel>> UpdateAsync([FromBody] ProductImageRequestModel productImageRequest)
         {
@@ -62,6 +66,7 @@ namespace ECommerce.Controllers
         }
 
 
+        [Authorize]
         [HttpDelete("{id}")] // Ürün görselini silme
         public async Task<ActionResult<ProductImagesResponseModel>> DeleteAsync(int id)
         {

@@ -2,10 +2,12 @@
 using ECommerce.Core.Models.Request.City;
 using ECommerce.Core.Models.Response.City;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CityController : ControllerBase

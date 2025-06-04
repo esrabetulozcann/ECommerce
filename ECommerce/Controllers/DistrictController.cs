@@ -2,10 +2,12 @@
 using ECommerce.Core.Models.DTO;
 using ECommerce.Core.Models.Response.District;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class DistrictController : ControllerBase
@@ -37,7 +39,7 @@ namespace ECommerce.Controllers
             return await _districtService.GetByNameAsync(name);
         }
 
-
+        [Authorize]// Yetkili kullanıcı için
         [HttpPost] // Yeni mahalle ekleniyor
         public async Task<ActionResult<DistrictResponseModel>> AddAsync([FromBody] DistrictResponseModel districtResponseModel)
         {

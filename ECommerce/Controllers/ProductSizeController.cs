@@ -1,10 +1,12 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Request.ProductSize;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductSizeController : ControllerBase
@@ -15,7 +17,7 @@ namespace ECommerce.Controllers
             _productSizeService = productSizeService;
         }
 
-
+        [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> AddProductSize([FromBody] ProductSizeAddRequestModel sizeAddRequestModel)
         {

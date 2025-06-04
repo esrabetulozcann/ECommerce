@@ -2,10 +2,12 @@
 using ECommerce.Core.Models.DTO;
 using ECommerce.Core.Models.Request.Town;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class TownController : ControllerBase
@@ -47,7 +49,7 @@ namespace ECommerce.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPost] // Yeni ilçe eklemek
         public async Task<ActionResult<BaseDTO>> AddAsync([FromBody] TownAddRequestModel addRequestModel)
         {

@@ -1,9 +1,11 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Response.Sizes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class SizeTypeController : ControllerBase

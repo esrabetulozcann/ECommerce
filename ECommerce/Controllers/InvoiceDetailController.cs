@@ -1,10 +1,12 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Response.Invoice;
 using ECommerce.Core.Models.Response.InvoiceDetail;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class InvoiceDetailController : ControllerBase

@@ -2,10 +2,12 @@
 using ECommerce.Core.Models.Request.Size;
 using ECommerce.Core.Models.Response.Sizes;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class SizeController :ControllerBase
@@ -16,10 +18,7 @@ namespace ECommerce.Controllers
             _sizeService = sizeService;
         }
 
-        /// <summary>
-        /// merhabaaaa
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet("GetAllSize")]
         public async Task<ActionResult<List<SizeResponseModel>>> GetAllAsync()
         {
@@ -51,6 +50,7 @@ namespace ECommerce.Controllers
         }
 
 
+        [Authorize]
         [HttpPost] // Yeni beden ekleme alanı
         public async Task<ActionResult<SizeResponseModel>> AddAsync([FromBody] SizeRequestModel model)
         {
@@ -66,6 +66,7 @@ namespace ECommerce.Controllers
         }
 
 
+        [Authorize]
         [HttpPut("{id} - update")] // Bedeni güncellemek için
         public async Task<ActionResult<SizeResponseModel>> UpdateAsync(int id, [FromBody] SizeRequestModel model)
         {
@@ -95,6 +96,7 @@ namespace ECommerce.Controllers
 
 
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<SizeResponseModel>> DeleteAsync(int id)
         {

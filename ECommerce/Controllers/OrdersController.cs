@@ -2,10 +2,12 @@
 using ECommerce.Core.Models.Request.Order;
 using ECommerce.Core.Models.Response.Orders;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class OrdersController : ControllerBase
@@ -39,30 +41,6 @@ namespace ECommerce.Controllers
         }
 
 
-
-        /*[HttpPost] // Yeni order ekleme
-        public async Task<ActionResult<OrderAddRequestModel>> AddAsync([FromBody] OrderAddRequestModel ordersResponseModel)
-        {
-            try
-            {
-                Order order = new Order
-                {
-                    UserId = ordersResponseModel.UserId,
-                    OrderDate = DateTime.UtcNow,
-                    AddressId = ordersResponseModel.AddressId,
-                    Status = true,
-                    
-                };
-
-                await _ordersService.AddAsync(order);
-                return Ok("Sipariş başarıyla eklendi");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        */
 
         [HttpPost]
         public async Task<ActionResult> AddAsync([FromBody] OrderAddRequestModel orderAddRequestModel)

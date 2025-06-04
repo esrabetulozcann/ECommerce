@@ -3,11 +3,13 @@ using ECommerce.Business.Concrete.Managers;
 using ECommerce.Core.Models.Request.Product;
 using ECommerce.Core.Models.Response.Product;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 
 namespace ECommerce.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
@@ -45,7 +47,7 @@ namespace ECommerce.Controllers
             return await _productService.SearchAsync(keyword);
         }
 
-
+        [Authorize]
         [HttpPost] // Yeni ürün ekleme alanı, authenticate eklenecek
         public async Task<ActionResult<ProductResponseModel>> AddAsync([FromBody] ProductRequestModel model)
         {
@@ -63,8 +65,8 @@ namespace ECommerce.Controllers
         }
 
 
+        [Authorize]
         [HttpPut("{id}")] // Yeni beden güncelleme alanı, authenticate ekle
-
         public async Task<ActionResult<ProductResponseModel>> UpdateAsync(int id, [FromBody] ProductRequestModel model)
         {
             try
@@ -79,7 +81,7 @@ namespace ECommerce.Controllers
         }
 
 
-
+        [Authorize]
         [HttpDelete("{id}")] // authenticate ekle
         public async Task<ActionResult<ProductResponseModel>> DeleteAsync(int id)
         {

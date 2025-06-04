@@ -3,10 +3,12 @@ using ECommerce.Core.Models.DTO;
 using ECommerce.Core.Models.Request.Country;
 using ECommerce.Core.Models.Response.Country;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class CountryController : ControllerBase
@@ -47,6 +49,7 @@ namespace ECommerce.Controllers
         }
 
 
+        [Authorize] // Sadece yetkili kullanıcı için 
         [HttpPost] // Yeni ülke eklemek
         public async Task<ActionResult<CountryResponseModel>> AddAsync([FromBody] CountryAndColourRequestModel countryRequest)
         {

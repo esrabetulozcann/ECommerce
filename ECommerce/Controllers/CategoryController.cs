@@ -1,9 +1,11 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class CategoryController : ControllerBase

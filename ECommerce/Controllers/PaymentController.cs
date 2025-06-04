@@ -1,9 +1,11 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Request.Payment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class PaymentController : ControllerBase

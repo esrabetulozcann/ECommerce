@@ -2,10 +2,12 @@
 using ECommerce.Core.Models.Request.ProductColour;
 using ECommerce.Core.Models.Response.Colours;
 using ECommerce.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductColourController :ControllerBase
@@ -17,12 +19,14 @@ namespace ECommerce.Controllers
             _productColourService = productColourService;   
         }
 
+        [AllowAnonymous]
         [HttpGet("GetAllProductColour")]
         public async Task<ActionResult<List<ProductColourResponseModel>>> GetAllAsync()
         {
             return await _productColourService.GetAllAsync();   
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}/ProductColour")]
         public async Task<ActionResult<ProductColourResponseModel>> GetByIdAsync(int id)
         {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
 using ECommerce.DataAccess.Models;
 using ECommerce.Core.Models.Request.Country;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerce.Controllers
 {
@@ -20,13 +21,14 @@ namespace ECommerce.Controllers
             _colourService = colourService;
         }
 
+        [AllowAnonymous]
         [HttpGet("GetAllColour")]
         public async Task<ActionResult<List<ColourResponseModel>>> GetAllAsync()
         {
             return await _colourService.GetAllAsync();
         }
 
-
+        [AllowAnonymous]
         [HttpGet("{id}/colours")]
         public async Task<ActionResult<ColourResponseModel>> GetByIdAsync(int id)
         {
@@ -34,6 +36,7 @@ namespace ECommerce.Controllers
             return colours;
         }
 
+        [AllowAnonymous]
         [HttpGet("coloursByName")]
         public async Task<ActionResult<ColourResponseModel>> GetByNameAsync([FromQuery] string name)
         {
@@ -42,6 +45,7 @@ namespace ECommerce.Controllers
         }
 
 
+        [Authorize] // Sadece yetkili kullanıcı ekleyebilir.
         [HttpPost] // Yeni renk ekleme
         public async Task<ActionResult<ColourResponseModel>> AddAsync([FromBody] CountryAndColourRequestModel colourRequestModel)
         {

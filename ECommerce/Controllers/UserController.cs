@@ -1,10 +1,12 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.Request.User;
 using ECommerce.Core.Models.Response.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -44,23 +46,6 @@ namespace ECommerce.Controllers
         {
             return await _userService.FindByNameAsync(name);
         }
-
-
-        [HttpPost] // Yeni kullanıcı ekleme
-        public async Task<ActionResult<UserAddRequestModel>> AddAsync([FromBody]  UserAddRequestModel model)
-        {
-            try
-            {
-                await _userService.AddAsync(model);
-                return Ok("Üye olundu.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
 
 
         [HttpPut("{id}")] // Kullanıcı bilgilerini güncelleme
