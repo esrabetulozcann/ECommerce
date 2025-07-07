@@ -12,6 +12,7 @@ namespace ECommerce.DataAccess.Abstract
         Task<List<Category>> GetAllCategoriesAsync();
         Task<List<Category>> GetActiveCategoriesAsync();
         Task<Category?> GetCategoryByNameAsync(string name);
+        Task<Category> FindByIdAsync(int id);
         Task<List<Category>> GetCategoriesByListNameAsync(string keyword);
 
 

@@ -1,5 +1,8 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Business.Concrete.Managers;
 using ECommerce.Core.Models.DTO;
+using ECommerce.Core.Models.Request.Category;
+using ECommerce.Core.Models.Response.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,6 +35,12 @@ namespace ECommerce.Controllers
             if (result == null)
                 return NotFound("Kategori bulunamadı.");
             return Ok(result);
+        }
+
+        [HttpGet("{id}/FindById")]
+        public async Task<ActionResult<CategoryRequestModel>> FindByIdAsync(int id)
+        {
+            return await _categoryService.FindByIdAsync(id);
         }
 
 

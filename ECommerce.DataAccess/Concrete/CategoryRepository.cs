@@ -17,6 +17,8 @@ namespace ECommerce.DataAccess.Concrete
             _context = new();
         }
 
+        
+
         public async Task<List<Category>> GetActiveCategoriesAsync()
         {
             return await _context.Categories
@@ -36,6 +38,12 @@ namespace ECommerce.DataAccess.Concrete
             return await _context.Categories
                 .Where(c => c.Name.ToLower().Contains(keyword.ToLower()) && c.IsActive == true)
                 .ToListAsync();
+        }
+
+
+        public async Task<Category> FindByIdAsync(int id)
+        {
+            return await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Category?> GetCategoryByNameAsync(string name)

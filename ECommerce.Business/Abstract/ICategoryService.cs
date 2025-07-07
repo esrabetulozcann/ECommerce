@@ -1,4 +1,6 @@
 ﻿using ECommerce.Core.Models.DTO;
+using ECommerce.Core.Models.Request.Category;
+using ECommerce.Core.Models.Response.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace ECommerce.Business.Abstract
     {
         Task<List<CategoryTreeDTO>> GetAllCategoriesAsync();
         Task<CategoryTreeDTO?> GetCategoryTreeByNameAsync(string name);
+        Task<CategoryWithProductsDTO?> FindByIdAsync(int id);
         Task<List<CategoryTreeDTO>> SearchCategoryTreesAsync(string keyword);
         Task<List<CategoryTreeDTO>> SearchCategoryTreeWithAncestorsAsync(string keyword);
     }

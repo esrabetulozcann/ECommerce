@@ -48,6 +48,23 @@ namespace ECommerce.Controllers
         }
 
 
+
+       /* [HttpPost("Add")]
+        public async Task<ActionResult> AddAsync([FromBody] UserAddRequestModel model)
+        {
+            try
+            {
+                await _userService.AddAsync(model);
+                return Ok("Kullanıcı başarıyla eklendi.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+       */
+
+
         [HttpPut("{id}")] // Kullanıcı bilgilerini güncelleme
         public async Task<ActionResult<UserAddRequestModel>> UpdateAsync(int id, [FromBody] UserAddRequestModel model)
         {

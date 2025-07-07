@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Core.Models.DTO;
+using ECommerce.Core.Models.Request.Category;
 using ECommerce.DataAccess.Abstract;
 using ECommerce.DataAccess.Models;
 using System;
@@ -13,11 +14,15 @@ namespace ECommerce.Business.Concrete.Managers
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IProductRepository _productRepository;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, IProductRepository productRepository)
         {
             _categoryRepository = categoryRepository;
+            _productRepository = productRepository;
         }
+
+
 
         public async Task<List<CategoryTreeDTO>> GetAllCategoriesAsync()
         {
@@ -84,6 +89,73 @@ namespace ECommerce.Business.Concrete.Managers
             return resultTrees;
         }
 
+
+        public async Task<CategoryWithProductsDTO?> FindByIdAsync(int id)
+        {
+            // Ana kategoriyi getir
+            var category = await _categoryRepository.FindByIdAsync(id);
+            if (category == null)
+                return null;
+
+            // Bütün kategorileri getir (alt kategorileri bulmak için)
+            var allCategories = await _categoryRepository.GetAllCategoriesAsync();
+
+            // Alt kategoriler
+            var children = allCategories
+                .Where(c => c.ParentCategoryId == category.Id)
+                .Select(c => new CategoryChildDTO
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToList();
+
+            // Ürünleri ProductRepository'den çek
+            var productsFromRepo = await _productRepository.GetByCategoryIdAsync(category.Id);
+
+            var products = productsFromRepo.Select(p => new ProductDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                ImageUrl = p.ProductImages != null && p.ProductImages.Any() ? p.ProductImages.FirstOrDefault().ImageUrl : null
+            }).ToList();
+
+            return new CategoryWithProductsDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Children = children,
+                Products = products
+            };
+        }
+
+        /*public async Task<CategoryRequestModel> FindByIdAsync(int id)
+        {
+            var result = await _categoryRepository.FindByIdAsync(id);
+            if(result == null)
+            {
+                return new CategoryRequestModel();
+            }
+            else
+            {
+                CategoryRequestModel categoryRequestModel = new CategoryRequestModel
+                {
+                    Id = result.Id,
+                    Name = result.Name,
+                    CategoryId = result.CategoryId,
+                    IsActive = result.IsActive,
+                    ParentCategoryId = result.ParentCategoryId,
+
+                };
+
+                return categoryRequestModel;
+            }
+        }
+        */
+
+
+
         private CategoryTreeDTO BuildTree(Category category, List<Category> allCategories)
         {
             var childrenByParent = allCategories
@@ -147,5 +219,7 @@ namespace ECommerce.Business.Concrete.Managers
 
             return null;
         }
+
+        
     }
 }

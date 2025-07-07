@@ -78,6 +78,7 @@ namespace ECommerce.DataAccess.Concrete
         {
             return await _context.Products
                 .Include(p => p.Category)
+                .Include(p => p.ProductImages)
                 .Include(p => p.ProductColours).ThenInclude(pc => pc.Colour)
                 .Include(p => p.ProductSizes).ThenInclude(ps => ps.Size)
                 .Where(p => p.CategoryId == categoryId)
