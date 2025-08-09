@@ -43,15 +43,29 @@ Proje **C# (.NET)**, **Entity Framework (Database First)** ve **SQL Server** tek
 | POST   | /api/Orders            | Sipariş oluştur      |
 
 
+1. POST   | /api/Auth/LoginUser    | Kullanıcı girişi     |
+<img width="930" height="858" alt="image" src="https://github.com/user-attachments/assets/ac32b595-7be4-4d74-9624-079d4616509d" />
 
-<img width="930" height="858" alt="image" src="https://github.com/user-attachments/assets/ac32b595-7be4-4d74-9624-079d4616509d" />   POST   | /api/Auth/LoginUser    | Kullanıcı girişi     |
-<img width="944" height="751" alt="image" src="https://github.com/user-attachments/assets/75ac5d1d-4774-4892-a299-945727f49753" />   POST   | /api/Auth/Register     | Kullanıcı kaydı      |
-<img width="1265" height="921" alt="image" src="https://github.com/user-attachments/assets/742f640a-036b-4396-9095-b04fb9e79900" />  GET    | /api/Product/GetAllProduct   | Ürünleri listele     |
-<img width="1401" height="914" alt="image" src="https://github.com/user-attachments/assets/33c6ce30-c7ad-4a2f-983e-01ccd99e6dd4" />  POST   | /api/Product           | Yeni ürün ekle       |
-<img width="948" height="795" alt="image" src="https://github.com/user-attachments/assets/4fd4667e-9417-4575-9682-1b54efb10001" />   PUT    | /api/Product/{id}      | Ürün güncelle        |
-<img width="1244" height="840" alt="image" src="https://github.com/user-attachments/assets/0bdf2ac8-5543-4fc7-af09-56629d607372" />  DELETE | /api/Product/{id}      | Ürün sil             |
-<img width="1254" height="920" alt="image" src="https://github.com/user-attachments/assets/f36b8e1d-41fd-4bbb-97b3-041733fd9831" />  GET    | /api/Category/GetAll        | Kategorileri listele |
-<img width="1296" height="903" alt="image" src="https://github.com/user-attachments/assets/d6ac18f0-3daf-4b74-8ce7-baccb17657d0" />  POST   | /api/Orders            | Sipariş oluştur      |
+2. POST   | /api/Auth/Register     | Kullanıcı kaydı      |
+<img width="944" height="751" alt="image" src="https://github.com/user-attachments/assets/75ac5d1d-4774-4892-a299-945727f49753" />
+
+3. GET    | /api/Product/GetAllProduct   | Ürünleri listele     |
+<img width="1265" height="921" alt="image" src="https://github.com/user-attachments/assets/742f640a-036b-4396-9095-b04fb9e79900" />
+
+4.  POST   | /api/Product           | Yeni ürün ekle       |
+<img width="1401" height="914" alt="image" src="https://github.com/user-attachments/assets/33c6ce30-c7ad-4a2f-983e-01ccd99e6dd4" />
+
+5. PUT    | /api/Product/{id}      | Ürün güncelle        |
+<img width="948" height="795" alt="image" src="https://github.com/user-attachments/assets/4fd4667e-9417-4575-9682-1b54efb10001" />
+
+ 6. DELETE | /api/Product/{id}      | Ürün sil   |
+<img width="1244" height="840" alt="image" src="https://github.com/user-attachments/assets/0bdf2ac8-5543-4fc7-af09-56629d607372" />
+
+7. GET    | /api/Category/GetAll    | Kategorileri listele |
+<img width="1254" height="920" alt="image" src="https://github.com/user-attachments/assets/f36b8e1d-41fd-4bbb-97b3-041733fd9831" />
+
+8. POST   | /api/Orders            | Sipariş oluştur      |
+<img width="1296" height="903" alt="image" src="https://github.com/user-attachments/assets/d6ac18f0-3daf-4b74-8ce7-baccb17657d0" />  
 
 
 ##   Swagger Diğer Ekran Görüntüleri
